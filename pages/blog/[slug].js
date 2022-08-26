@@ -26,8 +26,7 @@ const Post = ({ post }) => {
 		);
 	}
 
-	if (!post.content || post.notFound) {
-		return (
+	return (
 			<LayoutContainer>
 				<Head>
 					<meta name="robots" content="noindex" />
@@ -35,30 +34,6 @@ const Post = ({ post }) => {
 				<Error statusCode={404} />
 			</LayoutContainer>
 		);
-	}
-
-	return (
-		<>
-			<LayoutContainer>
-				<Flex flexDirection="column" alignItems="center" py={6}>
-					<Box maxWidth={boxBreakpointValue}>
-						<Box h={'350px'} bg={'gray.100'} mt={-6} mb={6} pos={'relative'}>
-							<Image
-								src={post.coverImage.url}
-								layout="fill"
-								objectFit="cover"
-							/>
-						</Box>
-						<Heading>Temp title</Heading>
-						<time>{dayjs(post.date).format('MMM DD, YYYY')}</time>
-						<ReactMarkdown className={styles.content}>
-							{post.content.markdown}
-						</ReactMarkdown>
-					</Box>
-				</Flex>
-			</LayoutContainer>
-		</>
-	);
 };
 
 export async function getStaticProps({ params }) {

@@ -1,0 +1,30 @@
+$def-vert-padding: 20px;
+
+.fullScreen {
+	height:100vh;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+}
+
+.form {
+  padding: 30px;
+  label {
+    margin-top: $def-vert-padding;
+  }
+
+  button {
+    margin-top: $def-vert-padding;
+  }
+}
+
+.formElement {
+	
+}
+
+.button {
+  	@extend .formElement;
+  	margin-top: $def-vert-padding;
+}
+

@@ -59,7 +59,7 @@ const Post = ({ post }) => {
 								objectFit="cover"
 							/>
 						</Box>
-						<Heading>{post.title}</Heading>
+						<Heading>Temp title</Heading>
 						<time>{dayjs(post.date).format('MMM DD, YYYY')}</time>
 						<ReactMarkdown className={styles.content}>
 							{post.content.markdown}

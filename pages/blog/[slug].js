@@ -87,12 +87,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-	const { posts } = await graphcms.request(`{
-	posts {
-		slug
-		title
-		}
-	}`);
+	const posts = []
 
 	const paths = posts.map(({ slug }) => `/blog/${slug}`);
 

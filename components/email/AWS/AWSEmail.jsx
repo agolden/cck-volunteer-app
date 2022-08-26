@@ -4,8 +4,14 @@ const util = require('util');
 export default class AWSEmail {
 	static async sendEmail({from, to, subject, body, region = process.env.APP_AWS_REGION}) {
 
+		const credentials = {
+		    accessKeyId: process.env.APP_AWS_ACCESS_KEY_ID,
+		    secretAccessKey: process.env.APP_AWS_SECRET_ACCESS_KEY,
+		}
+
 		let client = new AWS.SES({
 			region: region,
+			credentials: credentials
 		});
 
 		const params = {

@@ -73,27 +73,6 @@ const Post = ({ post }) => {
 
 export async function getStaticProps({ params }) {
 	try {
-		/*const { post } = await graphcms.request(
-			`
-			query BlogPostQuery($slug: String!){
-				post(where: {slug: $slug}) {
-					title
-					date
-					excerpt
-					slug
-					content {
-						markdown
-					}
-					coverImage {
-						url
-					}
-				}
-			}`,
-			{
-				slug: params.slug,
-			},
-		);*/
-
 		const post = [];
 
 		return {

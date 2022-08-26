@@ -49,16 +49,6 @@ const Event = ({ event }) => {
 
 	return (
 		<>
-			<NextSeo
-				title={`${event.title} | Cambridge Community Kitchen`}
-				description={event.description.text.slice(0, 50)}
-				openGraph={{
-					title: `${event.title} | Cambridge Community Kitchen`,
-					description: event.description.text.slice(0, 50),
-					images: [{ url: event.image.url }],
-					type: 'article',
-				}}
-			/>
 			<LayoutContainer>
 				<Flex flexDirection="column" alignItems="center" py={6}>
 					<Box maxWidth={boxBreakpointValue}>

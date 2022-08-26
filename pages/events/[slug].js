@@ -128,7 +128,7 @@ export async function getStaticProps({ params }) {
 export async function getStaticPaths() {
 	const events = []
 
-	const paths = events.map(({ slug }) => `/events/${slug}`);
+	const paths = [];
 
 	return {
 		paths,

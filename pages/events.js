@@ -63,7 +63,7 @@ const Events = ({ events }) => {
 export async function getStaticProps() {
 	const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL);
 
-	const { events } = await graphcms.request(`
+	/*const { events } = await graphcms.request(`
 	{
 		events(orderBy: date_DESC) {
 			id
@@ -79,7 +79,9 @@ export async function getStaticProps() {
 				url
 			}
 		}
-	}`);
+	}`);*/
+
+	events = [];
 
 	return {
 		props: {

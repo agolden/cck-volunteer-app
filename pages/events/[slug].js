@@ -112,28 +112,7 @@ const Event = ({ event }) => {
 
 export async function getStaticProps({ params }) {
 	try {
-		const { event } = await graphcms.request(
-			`
-			query EventQuery($slug: String!){
-				event(where: {slug: $slug}) {
-					title
-					date
-					slug
-					location
-					link
-					description {
-						markdown
-						text
-					}
-					image {
-						url
-					}
-				}
-			}`,
-			{
-				slug: params.slug,
-			},
-		);
+		const event = [];
 
 		return {
 			props: {
@@ -147,12 +126,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-	const { events } = await graphcms.request(`{
-	events {
-		slug
-		title
-		}
-	}`);
+	const events = []
 
 	const paths = events.map(({ slug }) => `/events/${slug}`);
 

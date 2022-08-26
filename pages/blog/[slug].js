@@ -40,10 +40,10 @@ const Post = ({ post }) => {
 	return (
 		<>
 			<NextSeo
-				title={`${post.title} | Cambridge Community Kitchen`}
+				title={`Blog | Cambridge Community Kitchen`}
 				description={post.excerpt}
 				openGraph={{
-					title: `${post.title} | Cambridge Community Kitchen`,
+					title: `Blog | Cambridge Community Kitchen`,
 					description: post.excerpt,
 					images: [{ url: post.coverImage.url }],
 					type: 'article',

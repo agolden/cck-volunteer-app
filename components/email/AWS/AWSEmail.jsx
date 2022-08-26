@@ -2,7 +2,7 @@ import * as AWS from "@aws-sdk/client-ses";
 const util = require('util');
 
 export default class AWSEmail {
-	static async sendEmail({from, to, subject, body, region = process.env.AWS_REGION}) {
+	static async sendEmail({from, to, subject, body, region = process.env.APP_AWS_REGION}) {
 
 		let client = new AWS.SES({
 			region: region,

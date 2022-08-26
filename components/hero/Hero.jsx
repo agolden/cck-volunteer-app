@@ -17,6 +17,9 @@ import React from 'react';
 
 const Hero = () => {
 
+	const flexDisp = useBreakpointValue({ base: 'none', md: 'flex' });
+	const blobColor = useColorModeValue('red.50', 'red.400');
+
 	const user = React.useContext(UserContext);
 	if (user !== null) {
 		return (
@@ -36,11 +39,11 @@ const Hero = () => {
 							<Text as={'span'}>Hi, {user.nickname}!</Text>
 						</Heading>
 						<Text color={'gray.500'}>
-							Congratulations, you've successfully signed in! Sign up for a new volunteer shift today.
+							Congratulations, you&#39;ve successfully signed in! Sign up for a new volunteer shift today.
 						</Text>
 					</Stack>
 					<Flex
-						display={useBreakpointValue({ base: 'none', md: 'flex' })}
+						display={flexDisp}
 						flex={1}
 						justify={'center'}
 						align={'center'}
@@ -54,7 +57,7 @@ const Hero = () => {
 							top={'-20%'}
 							left={0}
 							zIndex={-1}
-							color={useColorModeValue('red.50', 'red.400')}
+							color={blobColor}
 						/>
 						<Box
 							position={'relative'}

@@ -39,16 +39,6 @@ const Post = ({ post }) => {
 
 	return (
 		<>
-			<NextSeo
-				title={`Blog | Cambridge Community Kitchen`}
-				description={post.excerpt}
-				openGraph={{
-					title: `Blog | Cambridge Community Kitchen`,
-					description: post.excerpt,
-					images: [{ url: post.coverImage.url }],
-					type: 'article',
-				}}
-			/>
 			<LayoutContainer>
 				<Flex flexDirection="column" alignItems="center" py={6}>
 					<Box maxWidth={boxBreakpointValue}>

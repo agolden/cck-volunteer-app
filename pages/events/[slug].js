@@ -36,8 +36,7 @@ const Event = ({ event }) => {
 		);
 	}
 
-	if (!event.description || event.notFound) {
-		return (
+	return (
 			<LayoutContainer>
 				<Head>
 					<meta name="robots" content="noindex" />
@@ -45,59 +44,6 @@ const Event = ({ event }) => {
 				<Error statusCode={404} />
 			</LayoutContainer>
 		);
-	}
-
-	return (
-		<>
-			<LayoutContainer>
-				<Flex flexDirection="column" alignItems="center" py={6}>
-					<Box maxWidth={boxBreakpointValue}>
-						<Box h={'380px'} bg={'gray.100'} mt={-6} mb={6} pos={'relative'}>
-							<Image src={event.image.url} layout="fill" objectFit="cover" />
-						</Box>
-						<Heading>{event.title}</Heading>
-						<time>{dayjs(event.date).format('MMM DD, YYYY, HH:mm')}</time>
-						<Box display="flex" justifyContent="space-between">
-							<Text
-								fontSize="lg"
-								color="gray.600"
-								display="flex"
-								fontWeight="700"
-								alignItems="center"
-								mt={2}
-							>
-								<Icon
-									as={HiOutlineLocationMarker}
-									color="green.500"
-									mr={1}
-									fontSize="lg"
-								/>
-								{event.location}
-							</Text>
-							{event.link && (
-								<Link href={event.link} isExternal>
-									<Button
-										fontSize={'sm'}
-										fontWeight={600}
-										color={'white'}
-										bg={'green.400'}
-										_hover={{
-											bg: 'green.300',
-										}}
-									>
-										Register
-									</Button>
-								</Link>
-							)}
-						</Box>
-						<ReactMarkdown className={styles.content}>
-							{event.description.markdown}
-						</ReactMarkdown>
-					</Box>
-				</Flex>
-			</LayoutContainer>
-		</>
-	);
 };
 
 export async function getStaticProps({ params }) {

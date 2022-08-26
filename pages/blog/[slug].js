@@ -73,7 +73,10 @@ const Post = ({ post }) => {
 
 export async function getStaticProps({ params }) {
 	try {
-		const post = [];
+		const post = {
+			slug: "posts"
+			title: "post"
+		};
 
 		return {
 			props: {

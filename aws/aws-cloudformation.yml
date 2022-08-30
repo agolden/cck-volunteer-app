@@ -27,42 +27,8 @@ Parameters:
     Description: The VPC into which the database should be deployed
 
 Resources:
-  DBSecretKey:
-    Type: AWS::KMS::Key
-    Properties:
-      Description: Key used to generate database access secrets
-      Tags: 
-        - Key: "cck:appid"
-          Value: !Ref AppId
-        - Key: "cck:env"
-          Value: !Ref Environment
-      KeyPolicy:
-        Statement:
-          - Sid: "Allow administration of the key"
-            Effect: "Allow"
-            Principal:
-              AWS: !Sub arn:aws:iam::${AWS::AccountId}:user/cloudformation-app-deployment
-            Action: [
-              "kms:Create*",
-              "kms:Describe*",
-              "kms:Enable*",
-              "kms:List*",
-              "kms:Put*",
-              "kms:Update*",
-              "kms:Revoke*",
-              "kms:Disable*",
-              "kms:Get*",
-              "kms:Delete*",
-              "kms:ScheduleKeyDeletion",
-              "kms:CancelKeyDeletion",
-              "kms:Decrypt",
-              "kms:GenerateDataKey"
-            ]
-            Resource: "*"
-
-  DBMasterSecret:
+  DBMasterAdmin:
     Type: AWS::SecretsManager::Secret
-    DependsOn: DBSecretKey
     Properties:
       Description: The db master user's login info
       Tags: 
@@ -70,16 +36,15 @@ Resources:
           Value: !Ref AppId
         - Key: "cck:env"
           Value: !Ref Environment
-      KmsKeyId: !Ref DBSecretKey
       GenerateSecretString:
         SecretStringTemplate: !Join [ '', [ '{"username": "', !Ref DBMasterUserName, '"}' ] ]
-        GenerateStringKey: 'password'
+        GenerateStringKey: password
         PasswordLength: 32
-        ExcludeCharacters: '"@/\'
+        ExcludeCharacters: >-
+          '"@/\%_$
 
-  DBAppSecret:
+  DBAppAdmin:
     Type: AWS::SecretsManager::Secret
-    DependsOn: DBSecretKey
     Properties:
       Description: The application's database user's login info
       Tags: 
@@ -87,12 +52,12 @@ Resources:
           Value: !Ref AppId
         - Key: "cck:env"
           Value: !Ref Environment
-      KmsKeyId: !Ref DBSecretKey
       GenerateSecretString:
         SecretStringTemplate: !Join [ '', [ '{"username": "', !Ref AppId, '"}' ] ]
-        GenerateStringKey: 'password'
+        GenerateStringKey: password
         PasswordLength: 32
-        ExcludeCharacters: '"@/\'
+        ExcludeCharacters: >-
+          '"@/\%_$
 
   DBSecurityGroup:
     Type: "AWS::EC2::SecurityGroup"
@@ -117,9 +82,6 @@ Resources:
 
   DBInstance:
     Type: AWS::RDS::DBInstance
-    DependsOn:
-      - DBMasterSecret
-      - DBSecurityGroup
     Properties:
       Tags: 
         - Key: "cck:appid"
@@ -133,20 +95,64 @@ Resources:
         - !Ref DBSecurityGroup
       EngineVersion: "8.0.28"
       PubliclyAccessible : True
-      MasterUsername: !Ref DBMasterUserName
-      MasterUserPassword: !Join [ '', [ '{{resolve:secretsmanager:', !Ref DBMasterSecret, ':SecretString:password}}' ] ]
+      MasterUsername: !Sub '{{resolve:secretsmanager:${DBMasterAdmin}::username}}'
+      MasterUserPassword: !Sub '{{resolve:secretsmanager:${DBMasterAdmin}::password}}'
       StorageType: gp2
       StorageEncrypted: true
       AllocatedStorage: 10
       MultiAZ: False
+  
+  SecretRDSInstanceAttachment:
+    Type: 'AWS::SecretsManager::SecretTargetAttachment'
+    Properties:
+      SecretId: !Ref DBMasterAdmin
+      TargetId: !Ref DBInstance
+      TargetType: 'AWS::RDS::DBInstance'
+
+  AppUser:
+    Type: AWS::IAM::User
+    Properties:
+      UserName: !Join [ '-', [ !Ref AWS::StackName, 'app-user' ] ]
+  
+  AppUserPermissions:
+    Type: AWS::IAM::Policy
+    Properties: 
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Action:
+              - 'ses:SendEmail'
+            Resource: '*'
+            Condition:
+              StringEquals:
+                'ses:FromAddress': 'admin@cckitchen-app.uk'
+      PolicyName: !Join [ '-', [ !Ref AWS::StackName, 'app-user-permissions' ] ]
+      Users: 
+        - !Ref AppUser
+  
+  AppUserCredentials:
+    Type: AWS::IAM::AccessKey
+    Properties:
+      Status: Active
+      UserName: !Ref AppUser
+  
+  AppCredentialsStored:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: The application's AWS access key (e.g., for sending emails)
+      SecretString: !Sub '{"ACCESS_KEY":"${AppUserCredentials}","SECRET_KEY":"${AppUserCredentials.SecretAccessKey}"}'
 
 Outputs:
   DBMasterSecretARN:
     Description: The resource id of the secret containing the db master user's login info
-    Value: !Ref DBMasterSecret
+    Value: !Ref DBMasterAdmin
   DBAppSecretARN:
     Description: The resource id of the secret containing the application's database user's login info
-    Value: !Ref DBAppSecret
-  DBInstanceARN:
+    Value: !Ref DBAppAdmin
+  AWSAppSecretARN:
+    Description: The resource id of the secret containing the application's AWS access key
+    Value: !Ref AppCredentialsStored
+  DBInstanceEndpoint:
     Description: The resource id of the launched database instance
-    Value: !Ref DBInstance
+    Value: !GetAtt DBInstance.Endpoint.Address

@@ -1,13 +1,13 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 const util = require('util');
 const SQL = require('sql-template-strings');
 
 const pool = mysql.createPool({
     connectionLimit : 100, //important
-    host: 'volunteer-db.cckitchen-app.uk',
+    host: process.env.DB_HOST,
 	user: process.env.DB_USER,
 	password: process.env.DB_PASSWORD,
-	database: 'cckrota'
+	database: process.env.DB_NAME
 });
 
 pool.asyncQuery = async (qString) => {

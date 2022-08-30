@@ -8,8 +8,8 @@ import {
 	Container,
 } from '@chakra-ui/react';
 
-import LayoutContainer from '@components/layout-container';
-import Card from '@components/events/card';
+import LayoutContainer from '@/components/layout-container';
+import Card from '@/components/events/card';
 
 function SafeHydrate({ children }) {
 	// This prevents the app from rendering on the server

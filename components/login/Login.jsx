@@ -15,7 +15,7 @@ import { useState, setInput } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useRouter } from 'next/router'
 
-import { requestOTP } from '@components/api';
+import { requestOTP } from '@/components/api';
 
 export default function Login(props) {
 

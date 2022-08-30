@@ -1,7 +1,7 @@
 import { Box, SlideFade, useBreakpointValue } from '@chakra-ui/react';
 
-import Nav from '@components/nav';
-import Footer from '@components/footer';
+import Nav from '@/components/nav';
+import Footer from '@/components/footer';
 
 const LayoutContainer = ({ children }) => {
 

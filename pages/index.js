@@ -1,12 +1,12 @@
-import LayoutContainer from '@components/layout-container';
-import Hero from '@components/hero';
+import LayoutContainer from '@/components/layout-container';
+import Hero from '@/components/hero';
 import { NextSeo } from 'next-seo';
-import Splash from '@components/splash';
+import Splash from '@/components/splash';
 
 import { useState } from 'react';
-import UserContext from '@components/user-context';
+import UserContext from '@/components/user-context';
 import Router from 'next/router'
-import Login from '@components/login';
+import Login from '@/components/login';
 
 
 const Home = () => {

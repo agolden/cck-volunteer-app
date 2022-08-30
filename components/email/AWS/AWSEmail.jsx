@@ -9,6 +9,8 @@ export default class AWSEmail {
 		    secretAccessKey: process.env.APP_AWS_SECRET_ACCESS_KEY,
 		}
 
+		// const AWS = (await import('@aws-sdk/client-ses'));
+
 		let client = new AWS.SES({
 			region: region,
 			credentials: credentials

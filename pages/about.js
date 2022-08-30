@@ -1,4 +1,4 @@
-import LayoutContainer from '@components/layout-container';
+import LayoutContainer from '@/components/layout-container';
 import { NextSeo } from 'next-seo';
 import { GraphQLClient } from 'graphql-request';
 import ReactMarkdown from 'react-markdown';

@@ -1,10 +1,10 @@
 import { totp } from 'otplib';
-import DBConnection from '@components/db-connection';
-import { sendOTP } from '@components/email';
+import DBConnection from '@/components/db-connection';
+import { sendOTP } from '@/components/email';
 
 export default async function handler(req, res) {
 
-	var body = JSON.parse(req.body);
+	var body = req.body;
 	const data = await DBConnection.getUserByEmail(body.email);
 
 	if (data.length == 1) {

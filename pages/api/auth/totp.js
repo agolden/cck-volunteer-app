@@ -1,5 +1,5 @@
 import { totp } from 'otplib';
-import DBConnection from '@components/db-connection';
+import DBConnection from '@/components/db-connection';
 var jwt = require('jsonwebtoken');
 
 // To generate a key: openssl genrsa -out private-key.pem 4096

@@ -8,7 +8,7 @@ import ReactMarkdown from 'react-markdown';
 import dayjs from 'dayjs';
 import { NextSeo } from 'next-seo';
 
-import LayoutContainer from '@components/layout-container';
+import LayoutContainer from '@/components/layout-container';
 import styles from './post.module.scss';
 
 const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL);

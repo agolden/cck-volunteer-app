@@ -12,7 +12,7 @@ import {
 	Link,
 	useBreakpointValue,
 } from '@chakra-ui/react';
-import UserContext from '@components/user-context';
+import UserContext from '@/components/user-context';
 import React from 'react';
 
 const Hero = () => {

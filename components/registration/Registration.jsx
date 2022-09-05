@@ -31,6 +31,8 @@ export default function Login() {
 
 	const router = useRouter();
 
+	var initialEmail = (typeof router.query.email !== "undefined" ? router.query.email : '');
+	
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
 	const [registrationSucceeded, setRegistrationSucceeded] = useState(false);
@@ -61,6 +63,8 @@ export default function Login() {
 		:
 		null;
 
+	
+	
 	return (
 		<div className={styles.fullScreenPage}>
 
@@ -76,15 +80,18 @@ export default function Login() {
 					<Heading size='lg'>Volunteer registration</Heading>
 					{errorContent}
 					<Formik
+						enableReinitialize
 						initialValues={{
-							email: '',
+							email: initialEmail,
 							nickname: ''
 						}}
 						onSubmit={async (values) => {
 							await handleSubmit(values);
 						}}
 					>
-					{() => (
+					{({
+						values,
+					}) => (
 						<Form>
 							<Field name='email' type='email'>
 								{({ field }) => (
@@ -119,7 +126,10 @@ export default function Login() {
 										</AlertDialogBody>
 
 										<AlertDialogFooter>
-											<Button colorScheme='orange' onClick={() => router.push('/login')}>
+											<Button colorScheme='orange' onClick={() => router.push({
+												pathname: '/login',
+												query: { email: values.email }
+											}, '/login')}>
 												Proceed to Login
 											</Button>
 										</AlertDialogFooter>

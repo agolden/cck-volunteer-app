@@ -28,9 +28,11 @@ export default function Login() {
 
 	const router = useRouter();
 
+	var initialEmail = (typeof router.query.email !== "undefined" ? router.query.email : '');
+	
 	const [isLoading, setIsLoading] = useState(false);
 	const [displayOTPEntry, setDisplayOTPEntry] = useState(false);
-	const [email, setEmail] = useState('');
+	const [email, setEmail] = useState(initialEmail);
 	const [userEntryErrorMessage, setUserEntryErrorMessage] = useState('');
 	
 	const handleUserIdSubmit = async (email) => {
@@ -85,8 +87,9 @@ export default function Login() {
 					<Heading size='lg'>Volunteer sign in</Heading>
 					{userEntryErrorContent}
 					<Formik
+						enableReinitialize
 						initialValues={{
-							email: '',
+							email: initialEmail,
 						}}
 						onSubmit={async () => {
 							await handleUserIdSubmit(email);
@@ -110,7 +113,7 @@ export default function Login() {
 				<div className={styles.newVolunteer}>New to CCK?</div>
 				<Button
 					filter='auto'
-					onClick={() => router.push('/register')}
+					onClick={() => router.push('/register?email=' + email)}
 					colorScheme='blackAlpha'
 					className={styles.volunteerButton}>
 					Register to volunteer

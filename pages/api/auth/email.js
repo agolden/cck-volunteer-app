@@ -8,14 +8,14 @@ export default async function handler(req, res) {
 	const data = await DBConnection.getUserByEmail(body.email);
 
 	if (data.length == 1) {
-		let person = data[0]
+		let person = data[0];
 		const token = totp.generate(person.totpsecret);
 		
 		await sendOTP({otp: token, email: person.email});
 		res.status(200).json({ result: "Email dispatched" });
-    } else {
-    	res.status(404).json({ result: "User unknown" });
-    }
+	} else {
+		res.status(404).json({ result: "User unknown" });
+	}
 }
 
 /*

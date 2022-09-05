@@ -5,18 +5,16 @@ import {
 	Box,
 	Heading,
 	Text,
-	Button,
 	Image,
 	Icon,
 	useColorModeValue,
-	Link,
 	useBreakpointValue,
 } from '@chakra-ui/react';
 import UserContext from '@/components/user-context';
 import React from 'react';
 
-const Hero = () => {
-
+const Hero = (props) => {
+	
 	const flexDisp = useBreakpointValue({ base: 'none', md: 'flex' });
 	const blobColor = useColorModeValue('red.50', 'red.400');
 
@@ -36,7 +34,7 @@ const Hero = () => {
 							fontWeight={600}
 							fontSize={{ base: '4xl', lg: '6xl' }}
 						>
-							<Text as={'span'}>Hi, {user.nickname}!</Text>
+							<Text as={'span'}>Hi, {props.user.nickname}!</Text>
 						</Heading>
 						<Text color={'gray.500'}>
 							Congratulations, you&#39;ve successfully signed in! Sign up for a new volunteer shift today.
@@ -87,8 +85,6 @@ const Hero = () => {
 	
 };
 
-export default Hero;
-
 export const Blob = (props) => {
 	return (
 		<Icon
@@ -107,3 +103,6 @@ export const Blob = (props) => {
 		</Icon>
 	);
 };
+
+export default Hero;
+

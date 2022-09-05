@@ -5,6 +5,8 @@ import Footer from '@/components/footer';
 
 const LayoutContainer = ({ children }) => {
 
+//<Nav />
+
 	return (
 		<>
 			<Nav />

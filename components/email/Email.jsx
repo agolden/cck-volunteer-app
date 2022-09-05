@@ -1,7 +1,7 @@
 import AWSEmail from './AWS';
 
 function otpEmailBody(otp) {
-	return `Hello,\n\nWe received a request to log in to the CCK volunteer app.\n\n${otp}\n\nEnter this code on the login screen to confirm your identity.\n\nThanks,\nApp Administrators`
+	return `Hello,\n\nWe received a request to log in to the CCK volunteer app.\n\n${otp}\n\nEnter this code on the login screen to confirm your identity.\n\nThanks,\nApp Administrators`;
 }
 
 export const EMAIL_PROVIDER = Object.freeze({
@@ -12,7 +12,7 @@ function getEmailSender(provider) {
 	switch (provider) {
 		case EMAIL_PROVIDER.aws:
 		default:
-			return AWSEmail
+			return AWSEmail;
 	}
 }
 
@@ -24,5 +24,5 @@ export async function sendOTP({otp, email, provider = EMAIL_PROVIDER.aws}) {
 	let emailBody = otpEmailBody(otp);
 
 	let sender = getEmailSender(provider);
-	await sender.sendEmail({from: emailFrom, to: emailTo, subject: emailSubject, body: emailBody})
-};
+	await sender.sendEmail({from: emailFrom, to: emailTo, subject: emailSubject, body: emailBody});
+}

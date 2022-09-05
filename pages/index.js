@@ -1,32 +1,12 @@
 import LayoutContainer from '@/components/layout-container';
 import Hero from '@/components/hero';
 import { NextSeo } from 'next-seo';
-import Splash from '@/components/splash';
 
-import { useState } from 'react';
-import UserContext from '@/components/user-context';
-import Router from 'next/router'
-import Login from '@/components/login';
+import { jwtVerify } from 'jose';
 
-
-const Home = () => {
-
-  const [user, setUser] = useState(null);
-
-  let content = (user == null ? 
-    (
-      <Login />
-    )
-     : 
-    (
-      <LayoutContainer>
-        <Hero />
-      </LayoutContainer>
-    )
-  );
-
+const Home = (props) => {
   return (
-    <UserContext.Provider value={user}>
+    <>
       <NextSeo
         title="Cambridge Community Kitchen"
         description="We are a food solidarity collective tackling food poverty in Cambridge"
@@ -38,10 +18,23 @@ const Home = () => {
           url: 'https://cckitchen.uk',
         }}
       />
-      <Splash/>
-      {content}
-    </UserContext.Provider>
+      <LayoutContainer>
+        <Hero user={props.authenticatedUser}/>
+      </LayoutContainer>
+    </>
   );
 };
+  
+export async function getServerSideProps(context) {
+  const verified = await jwtVerify(
+    context.req.cookies.AuthJWT,
+    new TextEncoder().encode(process.env.JWT_SS)
+  );
+  return {
+    props: {
+      authenticatedUser: verified.payload
+    },
+  };
+}
 
 export default Home;

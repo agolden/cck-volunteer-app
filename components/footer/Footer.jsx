@@ -4,7 +4,6 @@ import {
 	chakra,
 	Container,
 	Flex,
-	Link,
 	Stack,
 	Text,
 	useColorModeValue,
@@ -52,7 +51,7 @@ const Footer = () => {
 
 export default Footer;
 
-const Logo = (props) => {
+const Logo = () => {
 	return (
 		<Flex>
 			<Image

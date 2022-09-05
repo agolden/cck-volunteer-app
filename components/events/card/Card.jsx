@@ -42,12 +42,13 @@ const Card = ({ event }) => {
 							<Image
 								src={event.image.url}
 								width="200px"
+								alt="Event image"
 								height="200px"
 								objectFit="cover"
 								layout="fixed"
 							/>
 						) : (
-							<Image src={event.image.url} objectFit="cover" layout="fill" />
+							<Image src={event.image.url} alt="Event image" objectFit="cover" layout="fill" />
 						)}
 					</Box>
 					<Spacer />

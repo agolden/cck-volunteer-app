@@ -18,13 +18,16 @@ import {
 import { HamburgerIcon, CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import styles from './Nav.module.scss';
 import React from 'react';
+import { setCookie } from 'cookies-next';
 
 export default function Nav() {
 	const { isOpen, onToggle } = useDisclosure();
 	const router = useRouter();
-	//const user = React.useContext(UserContext);
-
-	//<Text>{user.nickname}</Text>
+	
+	const onLogout = async () => {
+		setCookie('AuthJWT', '', { maxAge: 0 });
+		router.push('/login');
+	};
 
 	return (
 		<Box>
@@ -73,22 +76,18 @@ export default function Nav() {
 					</Flex>
 				</Flex>
 
-				<Link
-					href="https://opencollective.com/cambridge-community-kitchen#category-CONTRIBUTE"
-					isExternal
+				<Button
+					onClick={onLogout}
+					fontSize={'sm'}
+					fontWeight={600}
+					color={'white'}
+					bg={'green.400'}
+					_hover={{
+						bg: 'green.300',
+					}}
 				>
-					<Button
-						fontSize={'sm'}
-						fontWeight={600}
-						color={'white'}
-						bg={'green.400'}
-						_hover={{
-							bg: 'green.300',
-						}}
-					>
-						Donate
-					</Button>
-				</Link>
+					Logout
+				</Button>
 			</Flex>
 
 			<Collapse in={isOpen} animateOpacity>
@@ -196,7 +195,7 @@ const MobileNavItem = ({ label, children, href }) => {
 };
 
 const NAV_ITEMS = [
-	{
+/*	{
 		label: 'About',
 		href: '/about',
 	},
@@ -212,5 +211,5 @@ const NAV_ITEMS = [
 		label: 'Volunteer Info',
 		href: 'https://bit.ly/CCKwelcomepack',
 		newWindow: true,
-	},
+	},*/
 ];

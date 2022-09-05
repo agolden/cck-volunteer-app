@@ -1,8 +1,8 @@
 import Head from 'next/head';
-import Image from 'next/image';
+//import Image from 'next/image';
 import { useRouter } from 'next/router';
 import Error from 'next/error';
-import { GraphQLClient } from 'graphql-request';
+/*import { GraphQLClient } from 'graphql-request';
 import {
 	Box,
 	Button,
@@ -16,17 +16,17 @@ import {
 import ReactMarkdown from 'react-markdown';
 import dayjs from 'dayjs';
 import { NextSeo } from 'next-seo';
-import { HiOutlineLocationMarker } from 'react-icons/hi';
+import { HiOutlineLocationMarker } from 'react-icons/hi';*/
 
 import LayoutContainer from '@/components/layout-container';
-import styles from './event.module.scss';
+//import styles from './event.module.scss';
 
-const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL);
+//const graphcms = new GraphQLClient(process.env.GRAPHCMS_URL);
 
-const Event = ({ event }) => {
+const Event = (/*{ event }*/) => {
 	const router = useRouter();
 
-	const boxBreakpointValue = useBreakpointValue({ base: '90%', md: '650px' });
+	//const boxBreakpointValue = useBreakpointValue({ base: '90%', md: '650px' });
 
 	if (router.isFallback) {
 		return (
@@ -46,7 +46,7 @@ const Event = ({ event }) => {
 		);
 };
 
-export async function getStaticProps({ params }) {
+export async function getStaticProps() {
 	try {
 		const event = [];
 
@@ -62,7 +62,7 @@ export async function getStaticProps({ params }) {
 }
 
 export async function getStaticPaths() {
-	const events = []
+	// const events = [];
 
 	const paths = [];
 

@@ -13,11 +13,21 @@ const pool = mysql.createPool({
 pool.asyncQuery = async (qString) => {
 	const query = util.promisify(pool.query).bind(pool);
 	return await query(qString);
-}
+};
 
 pool.getUserByEmail = async (email) => {
 	let qString = SQL`SELECT * FROM person WHERE email = ${email}`; 
 	return await pool.asyncQuery(qString);
-}	
+};
+
+pool.getUserByEmailorNickname = async (email, nickname) => {
+	let qString = SQL`SELECT * FROM person WHERE (email = ${email} OR nickname = ${nickname} )`; 
+	return await pool.asyncQuery(qString);
+};
+
+pool.createUser = async ({email, totpsecret, nickname}) => {
+	let qString = SQL`INSERT INTO person(email, totpsecret, nickname) VALUES(${email}, ${totpsecret}, ${nickname})`; 
+	return await pool.asyncQuery(qString);
+};
 
 export default pool;

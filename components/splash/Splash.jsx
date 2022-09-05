@@ -15,15 +15,15 @@ export default function Splash(props) {
 
 	useEffect(() => {
 		const timeout = setTimeout(() => {
-	    	setVisible(false)
-	    	if (props.onComplete !== null && typeof props.onComplete === 'function') {
-	    		props.onComplete()
-	    	}
-	    }, 2250)
+			setVisible(false);
+			if (props.onComplete !== null && typeof props.onComplete === 'function') {
+				props.onComplete();
+			}
+		}, 2250);
 
-	    return () => clearTimeout(timeout)
+		return () => clearTimeout(timeout);
 
-	}, [isVisible])
+	}, [props]);
 
 	if(isVisible) {
 		return (
@@ -51,5 +51,5 @@ export default function Splash(props) {
 		);
 	}
 
-	return null
+	return null;
 }

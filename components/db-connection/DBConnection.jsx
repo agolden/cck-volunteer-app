@@ -15,6 +15,12 @@ pool.asyncQuery = async (qString) => {
 	return await query(qString);
 };
 
+pool.getUserRoles = async (personId) => {
+	let qString = SQL`SELECT role.role FROM person, person_role, role WHERE person.id=person_role.id_person AND role.id=person_role.id_role AND person.id = ${personId}`;
+	let rows = await pool.asyncQuery(qString);
+	return rows.map((row) => row.role);
+}
+
 pool.getUserByEmail = async (email) => {
 	let qString = SQL`SELECT * FROM person WHERE email = ${email}`; 
 	return await pool.asyncQuery(qString);

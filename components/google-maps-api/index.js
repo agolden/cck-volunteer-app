@@ -1,1 +1,1 @@
-export * from './GoogleMapsAPI.ts';
+export * from './GoogleMapsAPI';

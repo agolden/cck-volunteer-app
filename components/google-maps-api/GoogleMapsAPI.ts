@@ -10,5 +10,5 @@ export async function findLocation(location) {
     url.searchParams.append("fields", "formatted_address,geometry");
     
     let response = await fetch(url.href);
-    return response.json()
+    return response.json();
 }

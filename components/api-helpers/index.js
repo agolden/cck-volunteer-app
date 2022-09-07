@@ -1,1 +1,1 @@
-export * from './APIHelpers.ts';
+export * from './APIHelpers';

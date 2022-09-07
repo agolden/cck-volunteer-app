@@ -1,13 +1,7 @@
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
-import { jwtVerify } from 'jose'
-
-// Gets JWT from auth or cookie headers
-export function getJWTFromRequest(request: NextRequest) {
-
-  // TODO: Accept as cookie -OR- as authorization header
-  return request.cookies.get("AuthJWT");
-}
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
+import { jwtVerify } from 'jose';
+import { getUserContext } from '@/components/api-helpers';
 
 export async function middleware(request: NextRequest) {
 
@@ -23,11 +17,7 @@ export async function middleware(request: NextRequest) {
 
   if (isAuthRequired) {
     try {
-      var jwt = getJWTFromRequest(request);
-      const verified = await jwtVerify(
-        jwt,
-        new TextEncoder().encode(process.env.JWT_SS)
-      )
+      await getUserContext(request);
       return NextResponse.next();
     } catch (err) {
       if (request.nextUrl.pathname.startsWith('/api')) {

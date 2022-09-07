@@ -18,6 +18,8 @@ export default async function handler(req, res) {
 			const {...personn} = person;
 			delete personn.totpsecret;
 
+			personn.roles = await DBConnection.getUserRoles(person.id);
+
 			const token = await new SignJWT(personn)
 				.setProtectedHeader({ alg: 'HS256' })
 				.setJti(nanoid())

@@ -24,6 +24,14 @@ cd cck-volunteer-app
 npm install
 ```
 
+# Browser
+
+We suggest installing and using Chromium as your principal browser for development purposes.
+
+```console
+sudo apt install -y chromium-browser
+```
+
 # IDE
 
 We suggest installing and using [Visual Studio Code](https://code.visualstudio.com/download) as your integrated development environment (IDE).
@@ -36,4 +44,19 @@ The .env.local file must be present in the root of the directory. You can use th
 
 ```console
 cp example.env.local .env.local
+```
+
+In this file, there are several default variables that may be changed (and several others that may be added):
+
+* *DB_HOST* - *REQUIRED* The database instance's fully qualified domain name
+* *DB_MASTER_USER* - The database master user; only required if using initial database setup scripts (see below)
+* *DB_MASTER_PASSWORD* - The database master user's password; only required if using initial database setup scripts (see below)
+* *DB_NAME* - *REQUIRED* The name of the application's database
+* *DB_USER* - *REQUIRED* The application's database username
+* *DB_PASSWORD* - The application's database password
+
+A script has been provided to randomly generate passwords for your .env.local file, if desired:
+
+```console
+./scripts/generate-passwords.sh
 ```

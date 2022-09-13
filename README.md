@@ -53,15 +53,19 @@ In this file, there are several default variables that may be changed (and sever
 * *DB_MASTER_PASSWORD* - The database master user's password; only required if using initial database setup scripts (see below)
 * *DB_NAME* - *REQUIRED* The name of the application's database
 * *DB_USER* - *REQUIRED* The application's database username
-* *DB_PASSWORD* - The application's database password
+* *DB_PASSWORD* - *REQUIRED* The application's database password
 
 A script has been provided to randomly generate passwords for your .env.local file, if desired:
-
 ```console
 ./scripts/generate-passwords.sh
 ```
 
 A script has been provided to update the database's root user's password from the .env.local file, if desired:
 ```console
-./scripts/update-master-db-password.sh
+sudo ./scripts/update-master-db-password.sh
+```
+
+A script has been provided to create the application's database and database user, if desired:
+```console
+./scripts/create-db.sh
 ```

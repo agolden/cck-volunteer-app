@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-ENV_FILE="$SCRIPT_DIR/../.env.local" 
+ENV_FILE="$SCRIPT_DIR/../.env.local"
+
+source $ENV_FILE
 
 touch mysqlcreds.cnf
 chmod 700 mysqlcreds.cnf

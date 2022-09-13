@@ -79,9 +79,13 @@ export default function OTPModal(props) {
 			<AlertDescription>{errorMessage}</AlertDescription>
 		</Alert>
 		:
-		<Text>
-			An email has been dispatched to <b>{maskEmail(props.email)}</b> with a verification code. Please enter that code below:
-		</Text>;
+			(props.debug ?
+				<Text>We&apos;re in debug mode! Check the console for your OTP</Text>
+				:
+				<Text>
+					An email has been dispatched to <b>{maskEmail(props.email)}</b> with a verification code. Please enter that code below:
+				</Text>
+			);
 
 	var newProps = {};
 	for(var key in props){

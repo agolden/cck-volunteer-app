@@ -46,13 +46,14 @@ The .env.local file must be present in the root of the directory. You can use th
 
 ```console
 cp example.env.local .env.local
+ln -s .env.local .env
 ```
 
 In this file, there are several default variables that may be changed (and several others that may be added):
 
 * **DB_HOST** - *(required&#10071;)* - The database instance's fully qualified domain name
-* **DB_MASTER_USER** - The database master user; only required if using initial database setup scripts (see below)
-* **DB_MASTER_PASSWORD** - The database master user's password; only required if using initial database setup scripts (see below)
+* **DB_MASTER_USER** - *(required&#10071;)* - The database master user (required for schema and user management)
+* **DB_MASTER_PASSWORD** - *(required&#10071;)* - The database master user's password
 * **DB_NAME** - *(required&#10071;)* - The name of the application's database
 * **DB_USER** - *(required&#10071;)* - The application's database username
 * **DB_PASSWORD** - *(required&#10071;)* - The application's database password
@@ -75,4 +76,24 @@ sudo ./scripts/update-master-db-password.sh
 A script has been provided to create the application's database and database user:
 ```console
 ./scripts/create-db.sh
+```
+
+## Application scripts
+
+The package.json defines a number of scripts for use in development:
+
+* **dev** - Runs the development environment locally on port 3000
+* **build** - Builds the code for deployment. All code must successfully build or else it cannot be deployed.
+* **lint** - Helps keep your code nice and tidy! All code must pass lint or it cannot be deployed.
+* **test** - Runs unit tests. The pipeline will ultimately reject anything that doesn't pass tests.
+* **update-schema** - After changes are made to the schema.prisma file - or when first configuring your environment, this script should be run to deploy the schema to the database.
+
+Run the scripts as follows:
+```console
+npm run <<script>>
+```
+
+For example:
+```console
+npm run update-schema
 ```

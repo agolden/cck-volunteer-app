@@ -34,6 +34,7 @@ export default function Login() {
 	const [displayOTPEntry, setDisplayOTPEntry] = useState(false);
 	const [email, setEmail] = useState(initialEmail);
 	const [userEntryErrorMessage, setUserEntryErrorMessage] = useState('');
+	const [debug, setDebug] = useState(false);
 	
 	const handleUserIdSubmit = async (email) => {
 		setIsLoading(true);
@@ -42,6 +43,11 @@ export default function Login() {
 			if (res.status == 404) {
 				setUserEntryErrorMessage(UserIdErrorMessage.notFound);
 			} else if (res.status == 200) {
+				const body = await res.json(); 
+				console.log(body);
+				if (body.result.includes('console')) {
+					setDebug(true);
+				}
 				setEmail(email);
 				setDisplayOTPEntry(true);
 			}
@@ -73,7 +79,7 @@ export default function Login() {
 
 	return (
 		<div className={styles.login} width="100%" height="100%">
-			<OTPModal isOpen={displayOTPEntry} onClose={onOTPModalClose} email={email}/>
+			<OTPModal isOpen={displayOTPEntry} debug={debug} onClose={onOTPModalClose} email={email}/>
 			
 			<div className={styles.centerColumn}>
 				<Image

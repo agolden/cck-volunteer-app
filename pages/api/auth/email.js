@@ -11,13 +11,16 @@ export default async function handler(req, res) {
 		let person = data[0];
 		const token = totp.generate(person.totpsecret);
 		
+		var response = { result: "Email dispatched" };
+
 		if(process.env.SEND_EMAIL || !process.env.DEBUG) {
 			await sendOTP({otp: token, email: person.email});
 		} else {
 			console.log(`OTP requested for ${person.email}: ${token}`);
+			response.result = "OTP printed to console";
 		}
 		
-		res.status(200).json({ result: "Email dispatched" });
+		res.status(200).json(response);
 	} else {
 		res.status(404).json({ result: "User unknown" });
 	}

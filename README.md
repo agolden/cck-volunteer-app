@@ -60,3 +60,8 @@ A script has been provided to randomly generate passwords for your .env.local fi
 ```console
 ./scripts/generate-passwords.sh
 ```
+
+A script has been provided to update the database's root user's password from the .env.local file, if desired:
+```console
+./scripts/update-master-db-password.sh
+```

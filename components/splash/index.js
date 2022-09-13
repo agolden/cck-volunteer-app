@@ -1,1 +1,1 @@
-export { default } from './Splash.jsx';
+export { default } from './Splash';

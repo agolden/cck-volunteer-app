@@ -4,6 +4,9 @@ import { NextSeo } from 'next-seo';
 
 import { jwtVerify } from 'jose';
 
+/**
+ * The app's home page, i.e., the '/' path
+ */
 const Home = (props) => {
   return (
     <>
@@ -24,7 +27,10 @@ const Home = (props) => {
     </>
   );
 };
-  
+
+/**
+ * Fetches the user info from the JWT
+ */
 export async function getServerSideProps(context) {
   const verified = await jwtVerify(
     context.req.cookies.AuthJWT,

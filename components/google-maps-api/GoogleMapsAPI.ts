@@ -1,6 +1,12 @@
 const googleBaseUrl = "https://maps.googleapis.com/maps/api";
 
-export async function findLocation(location) {
+/**
+ * Uses the Google Maps API to fetch information about a given location (e.g., geographic coordinates)
+ * 
+ * @param {string} location The location / address to be located
+ * @returns {object} The search results matching the provided location
+ */
+export async function findLocation(location: string) {
 	
     const url = new URL(googleBaseUrl);
     url.pathname += '/place/findplacefromtext/json';

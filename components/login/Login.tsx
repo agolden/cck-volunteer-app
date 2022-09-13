@@ -17,9 +17,15 @@ import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/router';
 
 import { requestOTP } from '@/components/api';
-import OTPModal from './OTPModal.jsx';
+import OTPModal from './OTPModal';
+import type React from 'react';
 
-export default function Login() {
+/**
+ * Displays a full-page login screen
+ * 
+ * @returns {React.ReactElement} The login screen react component
+ */
+export default function Login(): React.ReactElement {
 
 	const UserIdErrorMessage = Object.freeze({
 		notFound: 'Volunteer not found. Please try again or register below.',
@@ -28,7 +34,7 @@ export default function Login() {
 
 	const router = useRouter();
 
-	var initialEmail = (typeof router.query.email !== "undefined" ? router.query.email : '');
+	const initialEmail = (typeof router.query.email !== "undefined" ? router.query.email : '');
 	
 	const [isLoading, setIsLoading] = useState(false);
 	const [displayOTPEntry, setDisplayOTPEntry] = useState(false);
@@ -39,7 +45,7 @@ export default function Login() {
 	const handleUserIdSubmit = async (email) => {
 		setIsLoading(true);
 		try {
-			var res = await requestOTP({baseURL: router.basePath, email});
+			const res = await requestOTP({baseURL: router.basePath, email});
 			if (res.status == 404) {
 				setUserEntryErrorMessage(UserIdErrorMessage.notFound);
 			} else if (res.status == 200) {
@@ -78,7 +84,7 @@ export default function Login() {
 	};
 
 	return (
-		<div className={styles.login} width="100%" height="100%">
+		<div className={styles.login}>
 			<OTPModal isOpen={displayOTPEntry} debug={debug} onClose={onOTPModalClose} email={email}/>
 			
 			<div className={styles.centerColumn}>

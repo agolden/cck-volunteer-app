@@ -11,7 +11,7 @@ export default class AWSEmail {
 
 		// const AWS = (await import('@aws-sdk/client-ses'));
 
-		let client = new AWS.SES({
+		const client = new AWS.SES({
 			region: region,
 			credentials: credentials
 		});

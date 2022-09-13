@@ -1,1 +1,1 @@
-export { default } from './AWSEmail.jsx';
+export { default } from './AWSEmail';

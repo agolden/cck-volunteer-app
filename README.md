@@ -58,6 +58,7 @@ In this file, there are several default variables that may be changed (and sever
 * **DB_USER** - *(required&#10071;)* - The application's database username
 * **DB_PASSWORD** - *(required&#10071;)* - The application's database password
 * **JWT_SS** - *(required&#10071;)* - The secret used in generating / validating JSON web tokens (for authentication/authorization purposes)
+* **DEBUG** - Enables debugging functionality, e.g., logging one time passwords to console
 
 ## Helper scripts
 

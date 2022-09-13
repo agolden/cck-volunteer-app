@@ -20,10 +20,16 @@ import {
 import { useState } from 'react';
 import { Formik, Form, Field } from 'formik';
 import { useRouter } from 'next/router';
+import React from 'react';
 
 import { registerUser } from '@/components/api';
 
-export default function Login() {
+/**
+ * Displays a full-page registration screen
+ * 
+ * @returns {React.ReactElement} The registration screen react component
+ */
+export default function Registration(): React.ReactElement {
 
 	const RegistrationErrorMessage = Object.freeze({
 		duplicate: 'A volunteer with this email or nickname already exists. Please try again.'
@@ -31,7 +37,7 @@ export default function Login() {
 
 	const router = useRouter();
 
-	var initialEmail = (typeof router.query.email !== "undefined" ? router.query.email : '');
+	const initialEmail = (typeof router.query.email !== "undefined" ? router.query.email : '');
 	
 	const [isLoading, setIsLoading] = useState(false);
 	const [errorMessage, setErrorMessage] = useState('');
@@ -41,7 +47,7 @@ export default function Login() {
 		setIsLoading(true);
 		setErrorMessage('');
 		try {
-			var res = await registerUser({baseURL: router.basePath, email: values.email, nickname: values.nickname}) ;
+			const res = await registerUser({baseURL: router.basePath, email: values.email, nickname: values.nickname}) ;
 			if (res.status == 400) {
 				setErrorMessage(RegistrationErrorMessage.duplicate);
 			} else if (res.status == 200) {
@@ -63,7 +69,7 @@ export default function Login() {
 		:
 		null;
 
-	
+	const cancelRef = React.useRef();
 	
 	return (
 		<div className={styles.fullScreenPage}>
@@ -112,6 +118,7 @@ export default function Login() {
 
 							<Button type='submit' colorScheme='orange' disabled={isLoading} className={styles.button}>Register</Button>
 							<AlertDialog
+								leastDestructiveRef={cancelRef}
 								isOpen={registrationSucceeded}
 								onClose={() => router.push('/')}
 							>
@@ -126,7 +133,7 @@ export default function Login() {
 										</AlertDialogBody>
 
 										<AlertDialogFooter>
-											<Button colorScheme='orange' onClick={() => router.push({
+											<Button ref={cancelRef} colorScheme='orange' onClick={() => router.push({
 												pathname: '/login',
 												query: { email: values.email }
 											}, '/login')}>

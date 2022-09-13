@@ -1,1 +1,1 @@
-export { default } from './LayoutContainer.jsx';
+export { default } from './LayoutContainer';

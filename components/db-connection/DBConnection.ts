@@ -11,12 +11,18 @@ const dbPool = mysql.createPool({
 	database: process.env.DB_NAME
 });
 
+/**
+ * Helper function for building promise-based database queries
+ */
 async function asyncQuery(qString) {
 	const query = util.promisify(dbPool.query).bind(dbPool);
 	return await query(qString);
 }
 
-export async function getUserRoles(personId) {
+/**
+ * Gets user's system and organization roles from the database
+ */
+export async function getUserRoles(personId: number) {
 
 	const qString = SQL`
 		SELECT system_role.role as role, organization.id_ref AS 'orgRef' FROM person
@@ -47,28 +53,26 @@ export async function getUserRoles(personId) {
 	return response;
 }
 
+/**
+ * Gets a unique user from the database by email address
+ */
 export async function getUserByEmail(email) {
 	const qString = SQL`SELECT * FROM person WHERE email = ${email}`; 
 	return await asyncQuery(qString);
 }
 
-export async function getUserByEmailorNickname(email, nickname) {
+/**
+ * Gets a unique user from the database by email address or nickname
+ */
+ export async function getUserByEmailorNickname(email, nickname) {
 	const qString = SQL`SELECT * FROM person WHERE (email = ${email} OR nickname = ${nickname} )`; 
 	return await asyncQuery(qString);
 }
 
-export async function createUser({email, totpsecret, nickname}) {
+/**
+ * Creates a user in the database
+ */
+ export async function createUser({email, totpsecret, nickname}) {
 	const qString = SQL`INSERT INTO person(email, totpsecret, nickname) VALUES(${email}, ${totpsecret}, ${nickname})`; 
-	return await asyncQuery(qString);
-}
-
-export async function getEventByIdOrRef(id, id_ref) {
-	const identifyingField = id ? 'id' : 'id_ref';
-	const idValue = id ? id : id_ref;
-
-	const qString = SQL`
-		SELECT * FROM event
-		WHERE person.${identifyingField} = ${idValue}
-	`;
 	return await asyncQuery(qString);
 }

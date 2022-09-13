@@ -1,9 +1,13 @@
 import { DBConnection } from '@/components/db-connection';
 import crypto from 'node:crypto';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req, res) {
+/**
+ * this is a test
+ */
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
-	var body = req.body;
+	const body = req.body;
 	if (body.email == null || body.nickname == null) {
 		res.status(400).json({ error: "Missing required fields"});
 		return;
@@ -15,7 +19,7 @@ export default async function handler(req, res) {
 		return;
 	}
 
-	var randomSecret = crypto.randomBytes(20).toString('hex');
+	const randomSecret = crypto.randomBytes(20).toString('hex');
 	await DBConnection.createUser({email: body.email, totpsecret: randomSecret, nickname: body.nickname});
 	res.status(200).json({ result: "User successfully created"});
 }

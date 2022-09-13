@@ -17,9 +17,14 @@ import {
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import styles from './Nav.module.scss';
-import React from 'react';
+import type React from 'react';
 import { setCookie } from 'cookies-next';
 
+/**
+ * The navigation bar which appears at the top of the screen
+ * 
+ * @returns {React.ReactElement} The navigation bar react component
+ */
 export default function Nav() {
 	const { isOpen, onToggle } = useDisclosure();
 	const router = useRouter();

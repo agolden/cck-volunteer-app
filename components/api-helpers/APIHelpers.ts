@@ -12,9 +12,12 @@ export enum UserRole {
     EVENT_ADMIN = 'event-admin'
 }
 
+/**
+ * Validates the JWT and retrieves the logged in user information
+ */
 export async function getUserContext(req: Request | IncomingMessage) {
     
-    let token;
+    let token: string;
     const isAPIRequest = !hasMappedHeaders(req.headers);
     const authHeader = isAPIRequest ? (req as Request).headers['authorization'] : (req.headers as Headers).get('authorization');
 
@@ -32,6 +35,9 @@ export async function getUserContext(req: Request | IncomingMessage) {
     return verified.payload;
 }
 
+/**
+ * Determines whether the user has one or more of the authorized roles to perform a given action
+ */
 export async function isUserAuthorized(req: NextApiRequest | NextRequest, res: NextApiResponse, authorizedRoles: string[], orgRef?: string) {
     const user = await getUserContext(req);
 

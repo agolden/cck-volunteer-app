@@ -2,14 +2,26 @@ import { totp } from 'otplib';
 import { DBConnection } from '@/components/db-connection';
 import { SignJWT } from 'jose';
 import { nanoid } from 'nanoid';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 
-export default async function handler(req, res) {
+interface EmailRequestBody {
+	email?: string;
+	totp: string;	
+}
 
-	var body = req.body;
+/**
+ * Accepts a request for TOTP token validation, to complete two-factor authentication
+ * 
+ * @param {NextApiRequest} req The Next.js API request
+ * @param {NextApiResponse} res The Next.js API response
+ */
+ export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+	const body: EmailRequestBody = req.body;
 	const data = await DBConnection.getUserByEmail(body.email);
 	if (data.length == 1) {
-		let person = data[0];
+		const person = data[0];
 
 		totp.options = { window: 5 };
 		const isValid = totp.check(body.totp, person.totpsecret);
@@ -18,8 +30,8 @@ export default async function handler(req, res) {
 			const {...personn} = person;
 			delete personn.totpsecret;
 
-			let roles = await DBConnection.getUserRoles(person.id);
-			let wholePerson = {...personn, ...roles};
+			const roles = await DBConnection.getUserRoles(person.id);
+			const wholePerson = {...personn, ...roles};
 			
 			const token = await new SignJWT(wholePerson)
 				.setProtectedHeader({ alg: 'HS256' })

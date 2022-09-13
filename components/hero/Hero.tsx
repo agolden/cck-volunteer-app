@@ -10,7 +10,6 @@ import {
 	useColorModeValue,
 	useBreakpointValue,
 } from '@chakra-ui/react';
-import UserContext from '@/components/user-context';
 import React from 'react';
 
 const Hero = (props) => {
@@ -18,8 +17,7 @@ const Hero = (props) => {
 	const flexDisp = useBreakpointValue({ base: 'none', md: 'flex' });
 	const blobColor = useColorModeValue('red.50', 'red.400');
 
-	const user = React.useContext(UserContext);
-	if (user !== null) {
+	if (props.user) {
 		return (
 			<Container maxW={'7xl'}>
 				<Stack

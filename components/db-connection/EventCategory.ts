@@ -18,12 +18,18 @@ export interface EventCategory extends EventCategoryInsert {
 	id: number;
 }
 
+/**
+ * Creates an event category in the database
+ */
 export async function create(category: EventCategoryInsert) {
 	return await prisma.event_category.create({
 		data: category,
 	});
 }
 
+/**
+ * Gets an event category from the database
+ */
 export async function get(category: EventCategoryIdentifier): Promise<EventCategory> {
 	if (category.id_organization_ref) {
 		const org = await Organization.get({id_ref: category.id_organization_ref});

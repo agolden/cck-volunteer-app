@@ -1,17 +1,29 @@
 import { totp } from 'otplib';
 import { DBConnection } from '@/components/db-connection';
 import { sendOTP } from '@/components/email';
+import type { NextApiRequest, NextApiResponse } from 'next';
 
-export default async function handler(req, res) {
 
-	var body = req.body;
+interface EmailRequestBody {
+	email: string;
+}
+
+/**
+ * Accepts a request for a TOTP token, to be sent to email or phone
+ * 
+ * @param {NextApiRequest} req The Next.js API request
+ * @param {NextApiResponse} res The Next.js API response
+ */
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+
+	const body: EmailRequestBody = req.body;
 	const data = await DBConnection.getUserByEmail(body.email);
 
 	if (data.length == 1) {
-		let person = data[0];
+		const person = data[0];
 		const token = totp.generate(person.totpsecret);
 		
-		var response = { result: "Email dispatched" };
+		const response = { result: "Email dispatched" };
 
 		if(process.env.SEND_EMAIL || !process.env.DEBUG) {
 			await sendOTP({otp: token, email: person.email});

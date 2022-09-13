@@ -19,8 +19,14 @@ import OtpInput from 'react18-otp-input';
 import { validateOTP } from '@/components/api';
 import { useRouter } from 'next/router';
 import { setCookie } from 'cookies-next';
+import type React from 'react';
 
-export default function OTPModal(props) {
+/**
+ * A modal that allows a user to enter in a OTP that they received (i.e., by phone or email)
+ * 
+ * @returns {React.ReactElement} The OTP modal react component
+ */
+export default function OTPModal(props): React.ReactElement {
 
 	const OTPErrorMessage = Object.freeze({
 		invalid: 'The validation code entered is invalid. Please try again.'
@@ -51,10 +57,10 @@ export default function OTPModal(props) {
 	};
 
 	const handleOTPSubmit = async () => {
-		let otp = otpEntryVal;
+		const otp = otpEntryVal;
 		setIsLoading(true);
 		try {
-			var res = await validateOTP({baseURL: router.basePath, email: props.email, otp});
+			const res = await validateOTP({baseURL: router.basePath, email: props.email, otp});
 			if (res.status == 401) {
 				// OTP validation failed, prompt for re-entry
 				clearOTPEntry();
@@ -62,7 +68,7 @@ export default function OTPModal(props) {
 				setIsLoading(false);
 			} else if (res.status == 200) {
 				// OTP validation succeeded, proceed to home screen
-				var responseBody = await res.json();
+				const responseBody = await res.json();
 				setCookie('AuthJWT', responseBody.jwt);
 				router.push('/');
 			}
@@ -73,7 +79,7 @@ export default function OTPModal(props) {
 		}
 	};
 
-	var modalBodyText = errorMessage.length > 0 ?
+	const modalBodyText = errorMessage.length > 0 ?
 		<Alert status='error'>
 			<AlertIcon />
 			<AlertDescription>{errorMessage}</AlertDescription>
@@ -87,14 +93,18 @@ export default function OTPModal(props) {
 				</Text>
 			);
 
-	var newProps = {};
-	for(var key in props){
-		if (key !== "onClose") {
+	let newIsOpen;
+	const newProps = {};
+	for(const key in props){
+		if (key === "isOpen") {
+			newIsOpen = props[key];
+		}
+		else if (key !== "onClose") {
 			newProps[key] = props[key];
 		}
 	}
 
-	newProps.onClose = () => {
+	const newOnClose = () => {
 		clearOTPEntry();
 		props.onClose();
 	};
@@ -102,7 +112,7 @@ export default function OTPModal(props) {
 	const spinner = isLoading? <Spinner size='xs' marginLeft="1em;"/> : null;
 
 	return (
-			<Modal {...newProps}>
+			<Modal isOpen={newIsOpen} onClose={newOnClose} {...newProps}>
 				<ModalOverlay />
 				<ModalContent marginX="20px;">
 					<ModalHeader textAlign="center">Enter Verification Code</ModalHeader>

@@ -7,10 +7,15 @@ import {
 	Heading
 } from '@chakra-ui/react';
 import { useState, useEffect } from 'react';
+import type React from 'react';
 
 
-
-export default function Splash(props) {
+/**
+ * Briefly displays a full-splash screen
+ * 
+ * @returns {React.ReactElement} The splash screen react component
+ */
+export default function Splash(props): React.ReactElement {
 	const [isVisible, setVisible] = useState(true);	
 
 	useEffect(() => {
@@ -25,9 +30,7 @@ export default function Splash(props) {
 
 	}, [props]);
 
-	if(isVisible) {
-		return (
-		<div className={styles.splash}>
+	return isVisible ? <div className={styles.splash}>
 			<SlideFade className={styles.logoFade} offsetY='80vh' in>
 				<Image
 					maxHeight="50vh"
@@ -47,9 +50,5 @@ export default function Splash(props) {
 					</Heading>
 				</Box>
 			</SlideFade>
-		</div>
-		);
-	}
-
-	return null;
+		</div> : null;
 }

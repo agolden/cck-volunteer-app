@@ -1,13 +1,13 @@
 import { SignJWT } from 'jose';
 import { nanoid } from 'nanoid';
 import { isUserAuthorized, UserRole } from '@/components/api-helpers';
-
+import type { NextApiRequest, NextApiResponse } from 'next';
 
 /**
  * Generates a long-lived token for secure applications, e.g., 
  * to be used by server-side service accounts
  */
-export default async function generateLongLivedToken(req, res) {
+export default async function generateLongLivedToken(req: NextApiRequest, res: NextApiResponse) {
 
 	/**
 	 * Only master administrators should be able to issue service accounts, 

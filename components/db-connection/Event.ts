@@ -23,12 +23,19 @@ export interface Event extends EventInsert {
 	id: number;
 }
 
-export async function create(event: EventInsert) {
+/**
+ * Creates an event in the database
+ */
+export async function create(event: EventInsert): Promise<Event> {
 	return await prisma.event.create({
 		data: event,
 	});
 }
 
+/**
+ * Builds a where clause for selecting a specific record; uses the record id
+ * if available, and the unique reference string as a fallback
+ */
 async function getUniqueEventWhereClause(event: EventIdentifier) {
 	const where = {};
 	if (event.id) {
@@ -45,6 +52,9 @@ async function getUniqueEventWhereClause(event: EventIdentifier) {
 	return where;
 }
 
+/**
+ * Gets an event from the database by id or reference
+ */
 export async function get(event: EventIdentifier): Promise<Event> {
 	const where = await getUniqueEventWhereClause(event);
 	return await prisma.event.findFirst({
@@ -52,8 +62,8 @@ export async function get(event: EventIdentifier): Promise<Event> {
 	});
 }
 
-/*
- *	Removes an event from the database
+/**
+ * Removes an event from the database
  */
 export async function remove(event: EventIdentifier) {
 	const where = await getUniqueEventWhereClause(event);

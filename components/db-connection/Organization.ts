@@ -12,7 +12,10 @@ export interface Organization extends OrganizationInsert {
 	id: number;
 }
 
-export async function create(org: OrganizationInsert) {
+/**
+ * Creates an organization in the database
+ */
+export async function create(org: OrganizationInsert): Promise<Organization> {
 	return await prisma.organization.create({
 		data: {
 			id_ref: org.id_ref,
@@ -22,7 +25,10 @@ export async function create(org: OrganizationInsert) {
 	});
 }
 
-export async function remove(org: RecordIdentifier) {
+/**
+ * Deletes an organization from the database
+ */
+ export async function remove(org: RecordIdentifier) {
 	const orgId = getReference(org);
 
 	const where = {};
@@ -34,7 +40,10 @@ export async function remove(org: RecordIdentifier) {
 }
 
 
-export async function get(org: RecordIdentifier): Promise<Organization> {
+/**
+ * Gets an organization from the database using database ids or refs
+ */
+ export async function get(org: RecordIdentifier): Promise<Organization> {
 	const orgId = getReference(org);
 
 	const where = {};

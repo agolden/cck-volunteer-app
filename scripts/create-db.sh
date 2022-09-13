@@ -19,3 +19,5 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON $DB_NAME.* TO '$DB_USER'@'%';
 EOFMYSQL
 
 rm mysqlcreds.cnf
+
+echo "Application database successfully created based on contents of the .env.local file"

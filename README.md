@@ -36,7 +36,9 @@ sudo apt install -y chromium-browser
 
 We suggest installing and using [Visual Studio Code](https://code.visualstudio.com/download) as your integrated development environment (IDE).
 
-# Environment setup
+# Development environment setup
+
+## Environment variables
 
 To successfully run this application, you must set several environment variables.
 
@@ -48,24 +50,28 @@ cp example.env.local .env.local
 
 In this file, there are several default variables that may be changed (and several others that may be added):
 
-* *DB_HOST* - *REQUIRED* The database instance's fully qualified domain name
-* *DB_MASTER_USER* - The database master user; only required if using initial database setup scripts (see below)
-* *DB_MASTER_PASSWORD* - The database master user's password; only required if using initial database setup scripts (see below)
-* *DB_NAME* - *REQUIRED* The name of the application's database
-* *DB_USER* - *REQUIRED* The application's database username
-* *DB_PASSWORD* - *REQUIRED* The application's database password
+* **DB_HOST** - *REQUIRED* - The database instance's fully qualified domain name
+* **DB_MASTER_USER** - The database master user; only required if using initial database setup scripts (see below)
+* **DB_MASTER_PASSWORD** - The database master user's password; only required if using initial database setup scripts (see below)
+* **DB_NAME** - *REQUIRED* - The name of the application's database
+* **DB_USER** - *REQUIRED* - The application's database username
+* **DB_PASSWORD** - *REQUIRED* - The application's database password
 
-A script has been provided to randomly generate passwords for your .env.local file, if desired:
+## Helper scripts
+
+A series of (optional) scripts are provided that will simplify the process of setting up your local development environment. Execute them in the following sequence:
+
+A script has been provided to randomly generate passwords for your .env.local file:
 ```console
 ./scripts/generate-passwords.sh
 ```
 
-A script has been provided to update the database's root user's password from the .env.local file, if desired:
+A script has been provided to update the database's root user's password from the .env.local file:
 ```console
 sudo ./scripts/update-master-db-password.sh
 ```
 
-A script has been provided to create the application's database and database user, if desired:
+A script has been provided to create the application's database and database user:
 ```console
 ./scripts/create-db.sh
 ```

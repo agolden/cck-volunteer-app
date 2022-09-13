@@ -50,12 +50,12 @@ cp example.env.local .env.local
 
 In this file, there are several default variables that may be changed (and several others that may be added):
 
-* **DB_HOST** - *REQUIRED* - The database instance's fully qualified domain name
+* **DB_HOST** - ***REQUIRED*** - The database instance's fully qualified domain name
 * **DB_MASTER_USER** - The database master user; only required if using initial database setup scripts (see below)
 * **DB_MASTER_PASSWORD** - The database master user's password; only required if using initial database setup scripts (see below)
-* **DB_NAME** - *REQUIRED* - The name of the application's database
-* **DB_USER** - *REQUIRED* - The application's database username
-* **DB_PASSWORD** - *REQUIRED* - The application's database password
+* **DB_NAME** - ***REQUIRED*** - The name of the application's database
+* **DB_USER** - ***REQUIRED*** - The application's database username
+* **DB_PASSWORD** - ***REQUIRED*** - The application's database password
 
 ## Helper scripts
 

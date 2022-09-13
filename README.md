@@ -53,9 +53,9 @@ In this file, there are several default variables that may be changed (and sever
 * **DB_HOST** - *(required&#10071;)* - The database instance's fully qualified domain name
 * **DB_MASTER_USER** - The database master user; only required if using initial database setup scripts (see below)
 * **DB_MASTER_PASSWORD** - The database master user's password; only required if using initial database setup scripts (see below)
-* **DB_NAME** - ***REQUIRED*** - The name of the application's database
-* **DB_USER** - ***REQUIRED*** - The application's database username
-* **DB_PASSWORD** - ***REQUIRED*** - The application's database password
+* **DB_NAME** - *(required&#10071;)* - The name of the application's database
+* **DB_USER** - *(required&#10071;)* - The application's database username
+* **DB_PASSWORD** - *(required&#10071;)* - The application's database password
 
 ## Helper scripts
 

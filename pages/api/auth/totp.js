@@ -1,5 +1,5 @@
 import { totp } from 'otplib';
-import DBConnection from '@/components/db-connection';
+import { DBConnection } from '@/components/db-connection';
 import { SignJWT } from 'jose';
 import { nanoid } from 'nanoid';
 
@@ -18,16 +18,17 @@ export default async function handler(req, res) {
 			const {...personn} = person;
 			delete personn.totpsecret;
 
-			personn.roles = await DBConnection.getUserRoles(person.id);
-
-			const token = await new SignJWT(personn)
+			let roles = await DBConnection.getUserRoles(person.id);
+			let wholePerson = {...personn, ...roles};
+			
+			const token = await new SignJWT(wholePerson)
 				.setProtectedHeader({ alg: 'HS256' })
 				.setJti(nanoid())
 				.setIssuedAt()
 				.setExpirationTime('4h')
 				.sign(new TextEncoder().encode(process.env.JWT_SS));
 
-			res.status(200).json({ result: "User successfully authenticated", jwt: token, user: personn });
+			res.status(200).json({ result: "User successfully authenticated", jwt: token, user: wholePerson });
 		} else {
 			res.status(401).json({ result: "Invalid email or totp code" });
 		}

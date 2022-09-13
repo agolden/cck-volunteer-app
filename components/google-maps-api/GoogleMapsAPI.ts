@@ -1,4 +1,4 @@
-let googleBaseUrl = "https://maps.googleapis.com/maps/api";
+const googleBaseUrl = "https://maps.googleapis.com/maps/api";
 
 export async function findLocation(location) {
 	
@@ -9,6 +9,6 @@ export async function findLocation(location) {
     url.searchParams.append("key", process.env.GOOGLE_MAPS_API_KEY);
     url.searchParams.append("fields", "formatted_address,geometry");
     
-    let response = await fetch(url.href);
+    const response = await fetch(url.href);
     return response.json();
 }

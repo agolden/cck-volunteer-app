@@ -7,11 +7,16 @@ const hasMappedHeaders = (headers: Headers | IncomingMessage['headers']): header
     return headers instanceof Headers;
 };
 
+export enum UserRole {
+    MASTER_ADMIN = 'master-admin',
+    EVENT_ADMIN = 'event-admin'
+}
+
 export async function getUserContext(req: Request | IncomingMessage) {
     
-    var token;
-    let isAPIRequest = !hasMappedHeaders(req.headers);
-    let authHeader = isAPIRequest ? (req as Request).headers['authorization'] : (req.headers as Headers).get('authorization');
+    let token;
+    const isAPIRequest = !hasMappedHeaders(req.headers);
+    const authHeader = isAPIRequest ? (req as Request).headers['authorization'] : (req.headers as Headers).get('authorization');
 
     if (authHeader) {
         token = authHeader.split(" ")[1];
@@ -27,10 +32,12 @@ export async function getUserContext(req: Request | IncomingMessage) {
     return verified.payload;
 }
 
-export async function isUserAuthorized(req: NextApiRequest | NextRequest, res: NextApiResponse, authorizedRoles: string[]) {
-    let user = await getUserContext(req);
+export async function isUserAuthorized(req: NextApiRequest | NextRequest, res: NextApiResponse, authorizedRoles: string[], orgRef?: string) {
+    const user = await getUserContext(req);
 
-    const isUserAuthorized = authorizedRoles.some(role => (user['roles'] as string[]).indexOf(role) >= 0);
+    const relevantRoles = orgRef == undefined ? user['roles'] : user['organizations'][orgRef]['roles'];
+
+    const isUserAuthorized = authorizedRoles.some(role => (relevantRoles['roles'] as string[]).indexOf(role) >= 0);
 
     if (!isUserAuthorized) {
         res.status(403).json({ result: "User does not have the appropriate permissions."});

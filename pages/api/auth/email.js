@@ -1,5 +1,5 @@
 import { totp } from 'otplib';
-import DBConnection from '@/components/db-connection';
+import { DBConnection } from '@/components/db-connection';
 import { sendOTP } from '@/components/email';
 
 export default async function handler(req, res) {

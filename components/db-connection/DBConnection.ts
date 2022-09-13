@@ -19,10 +19,10 @@ async function asyncQuery(qString) {
 export async function getUserRoles(personId) {
 
 	const qString = SQL`
-		SELECT role.role as role, organization.id_ref AS 'orgRef' FROM person
-		INNER JOIN person_role ON person.id = person_role.id_person
-		INNER JOIN role ON role.id = person_role.id_role
-		LEFT JOIN organization ON organization.id = person_role.id_organization
+		SELECT system_role.role as role, organization.id_ref AS 'orgRef' FROM person
+		INNER JOIN person_system_role ON person.id = person_system_role.id_person
+		INNER JOIN system_role ON system_role.id = person_system_role.id_role
+		LEFT JOIN organization ON organization.id = person_system_role.id_organization
 		WHERE person.id = ${personId}
 	`;
 	

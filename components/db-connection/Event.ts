@@ -29,7 +29,7 @@ export async function create(event: EventInsert) {
 	});
 }
 
-function getUniqueEventWhereClause(event: EventIdentifier) {
+async function getUniqueEventWhereClause(event: EventIdentifier) {
 	const where = {};
 	if (event.id) {
 		where['id'] = event.id;
@@ -46,7 +46,7 @@ function getUniqueEventWhereClause(event: EventIdentifier) {
 }
 
 export async function get(event: EventIdentifier): Promise<Event> {
-	const where = getUniqueEventWhereClause(event);
+	const where = await getUniqueEventWhereClause(event);
 	return await prisma.event.findFirst({
 		where: where
 	});
@@ -56,7 +56,7 @@ export async function get(event: EventIdentifier): Promise<Event> {
  *	Removes an event from the database
  */
 export async function remove(event: EventIdentifier) {
-	const where = getUniqueEventWhereClause(event);
+	const where = await getUniqueEventWhereClause(event);
 	await prisma.event.delete({
 		where: where
 	});

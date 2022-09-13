@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
-source '../.env.local'
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+ENV_FILE="$SCRIPT_DIR/../.env.local"
+
+source $ENV_FILE
 
 touch mysqlcreds.cnf
 chmod 700 mysqlcreds.cnf
@@ -10,8 +13,11 @@ echo "password=$DB_MASTER_PASSWORD" >> mysqlcreds.cnf
 
 mysql --defaults-extra-file=mysqlcreds.cnf -h "$DB_HOST" --enable-cleartext-plugin --user="$DB_MASTER_USER"<<EOFMYSQL
 
+CREATE DATABASE IF NOT EXISTS $DB_NAME;
 CREATE USER IF NOT EXISTS '$DB_USER'@'%' IDENTIFIED BY '$DB_PASSWORD';
 GRANT SELECT, INSERT, UPDATE, DELETE ON $DB_NAME.* TO '$DB_USER'@'%';
 EOFMYSQL
 
 rm mysqlcreds.cnf
+
+echo "Application database successfully created based on contents of the .env.local file"

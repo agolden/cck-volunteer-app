@@ -1,2 +1,2 @@
-export { default } from './Registration.jsx';
+export { default } from './Registration';
  

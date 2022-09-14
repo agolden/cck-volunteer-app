@@ -6,7 +6,7 @@ import { isUserAuthorized } from '@/components/api-helpers';
  * Fetches location details using the Google API
  */
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-	if (isUserAuthorized(req, res, ['master-admin'])) {
+	if (await isUserAuthorized(req, res, ['master-admin'])) {
 		const location = req.body.location;
 		const locationResponse = await findLocation(location);
 		res.status(200).json(locationResponse);

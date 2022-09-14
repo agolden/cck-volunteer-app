@@ -32,7 +32,10 @@ interface EmailRequestBody {
 
 			const roles = await DBConnection.getUserRoles(person.id);
 			const wholePerson = {...personn, ...roles};
-			if (process.env.DEBUG === "true") { console.log(wholePerson); }
+			if (process.env.DEBUG === "true") {
+				console.log("User OTP successfully validated.");
+				console.log(wholePerson);
+			}
 			
 			const token = await new SignJWT(wholePerson)
 				.setProtectedHeader({ alg: 'HS256' })

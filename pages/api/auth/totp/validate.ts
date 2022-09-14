@@ -32,10 +32,6 @@ interface EmailRequestBody {
 
 			const roles = await DBConnection.getUserRoles(person.id);
 			const wholePerson = {...personn, ...roles};
-			if (process.env.DEBUG === "true") {
-				console.log("User OTP successfully validated.");
-				console.log(wholePerson);
-			}
 			
 			const token = await new SignJWT(wholePerson)
 				.setProtectedHeader({ alg: 'HS256' })
@@ -44,7 +40,12 @@ interface EmailRequestBody {
 				.setExpirationTime('4h')
 				.sign(new TextEncoder().encode(process.env.JWT_SS));
 
-			res.status(200).json({ result: "User successfully authenticated", jwt: token, user: wholePerson });
+			const responseBody = { result: "User successfully authenticated", jwt: token, user: wholePerson };
+			if (process.env.DEBUG === "true") {
+				console.log(responseBody);
+			}
+
+			res.status(200).json(responseBody);
 		} else {
 			res.status(401).json({ result: "Invalid email or totp code" });
 		}

@@ -39,15 +39,25 @@ export async function getUserContext(req: Request | IncomingMessage) {
  * Determines whether the user has one or more of the authorized roles to perform a given action
  */
 export async function isUserAuthorized(req: NextApiRequest | NextRequest, res: NextApiResponse, authorizedRoles: string[], orgRef?: string) {
-    const user = await getUserContext(req);
+    
+    try {
+        const user = await getUserContext(req);
 
-    const relevantRoles = orgRef == undefined ? user['roles'] : user['organizations'][orgRef]['roles'];
+        const relevantRoles = orgRef == undefined ? user['roles'] : user['organizations'][orgRef]['roles'];
 
-    const isUserAuthorized = authorizedRoles.some(role => (relevantRoles['roles'] as string[]).indexOf(role) >= 0);
+        const isUserAuthorized = authorizedRoles.some(role => (relevantRoles['roles'] as string[]).indexOf(role) >= 0);
 
-    if (!isUserAuthorized) {
-        res.status(403).json({ result: "User does not have the appropriate permissions."});
+        if (!isUserAuthorized) {
+            res.status(403).json({ result: "User does not have the appropriate permissions."});
+        }
+
+        return isUserAuthorized;
+    } catch (e) {
+        if (process.env.DEBUG === "true") {
+            console.log("Error when attempting authorize user:");
+            console.log(e);
+        }
     }
 
-    return isUserAuthorized;
+    return false;
 }

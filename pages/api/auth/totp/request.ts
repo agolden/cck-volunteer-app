@@ -25,7 +25,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		
 		const response = { result: "Email dispatched" };
 
-		if(process.env.SEND_EMAIL || !process.env.DEBUG) {
+		if(process.env.SEND_EMAIL || !(process.env.DEBUG === "true")) {
 			await sendOTP({otp: token, email: person.email});
 		} else {
 			console.log(`OTP requested for ${person.email}: ${token}`);

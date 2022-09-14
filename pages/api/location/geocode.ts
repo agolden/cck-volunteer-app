@@ -10,5 +10,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 		const location = req.body.location;
 		const locationResponse = await findLocation(location);
 		res.status(200).json(locationResponse);
+	} else {
+		res.status(403).json({ result: "User not authorized." });
 	}
 }

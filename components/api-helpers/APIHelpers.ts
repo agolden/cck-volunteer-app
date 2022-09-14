@@ -17,15 +17,7 @@ export enum UserRole {
  */
 export async function getUserContext(req: Request | IncomingMessage) {
     
-    let token: string;
-    const isAPIRequest = !hasMappedHeaders(req.headers);
-    const authHeader = isAPIRequest ? (req as Request).headers['authorization'] : (req.headers as Headers).get('authorization');
-
-    if (authHeader) {
-        token = authHeader.split(" ")[1];
-    } else {
-        token = isAPIRequest ? (req as Request)['cookies']['AuthJWT'] : (req as IncomingMessage)['cookies'].get("AuthJWT");
-    }
+    const token = getTokenFromRequest(req);
 
     const verified = await jwtVerify(
         token,
@@ -33,6 +25,27 @@ export async function getUserContext(req: Request | IncomingMessage) {
     );
 
     return verified.payload;
+}
+
+/**
+ * Gets the JWT from the request (i.e., either from the authorization header or from a cookie)
+ */
+export function getTokenFromRequest(req: Request | IncomingMessage) {
+    const isAPIRequest = !hasMappedHeaders(req.headers);
+    const authHeader = isAPIRequest ? (req as Request).headers['authorization'] : (req.headers as Headers).get('authorization');
+
+    if (authHeader) {
+        return authHeader.split(" ")[1];
+    } else {
+        return isAPIRequest ? (req as Request)['cookies']['AuthJWT'] : (req as IncomingMessage)['cookies'].get("AuthJWT");
+    }
+}
+
+/**
+ * Parses a JWT without validating it (useful for debugging purposes)
+ */
+export function parseJwt(token: string) {
+    return JSON.parse(Buffer.from(token.split('.')[1], 'base64').toString());
 }
 
 /**
@@ -45,17 +58,24 @@ export async function isUserAuthorized(req: NextApiRequest | NextRequest, res: N
 
         const relevantRoles = orgRef == undefined ? user['roles'] : user['organizations'][orgRef]['roles'];
 
-        const isUserAuthorized = authorizedRoles.some(role => (relevantRoles['roles'] as string[]).indexOf(role) >= 0);
-
-        if (!isUserAuthorized) {
-            res.status(403).json({ result: "User does not have the appropriate permissions."});
+        for (const role in authorizedRoles) {
+            if (relevantRoles.indexOf(authorizedRoles[role]) >= 0) {
+                return true;
+            }
         }
 
-        return isUserAuthorized;
+        if (process.env.DEBUG === "true") {
+            console.log("User does not have any of the authorized roles.");
+            console.log("User roles: " + relevantRoles);
+            console.log("Authorized roles: " + authorizedRoles);
+        }
+
+        return false;
     } catch (e) {
         if (process.env.DEBUG === "true") {
             console.log("Error when attempting authorize user:");
             console.log(e);
+            console.log(parseJwt(getTokenFromRequest(req)));
         }
     }
 

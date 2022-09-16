@@ -66,11 +66,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const dirResponse = await client.directions(directionsRequest);
         const latlngs = polyUtil.decode(dirResponse.data.routes[0].overview_polyline.points);
 
-        let gpx = '<?xml version="1.0" encoding="UTF-8"?><gpx version="1.1" creator="Cambridge Community Kitchen - https://cckitchen.uk" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd">';
+        let gpx = '<?xml version="1.0" encoding="UTF-8"?><gpx version="1.1" creator="Cambridge Community Kitchen - https://cckitchen.uk" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.topografix.com/GPX/1/1" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd"><trk><trkseg>';
         for (const tupleIdx in latlngs) {
-            gpx = gpx + `<wpt lat="${latlngs[tupleIdx][0]}" lon="${latlngs[tupleIdx][1]}"/>`;
+            gpx = gpx + `<trkpt lat="${latlngs[tupleIdx][0]}" lon="${latlngs[tupleIdx][1]}"/>`;
         }
-        gpx = gpx + '</gpx>';
+        gpx = gpx + '</trkseg></trk></gpx>';
 
         res.setHeader('Content-Type', 'application/gpx+xml').status(200).write(gpx);
         res.end();

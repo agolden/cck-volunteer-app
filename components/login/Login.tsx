@@ -50,7 +50,6 @@ export default function Login(): React.ReactElement {
 				setUserEntryErrorMessage(UserIdErrorMessage.notFound);
 			} else if (res.status == 200) {
 				const body = await res.json(); 
-				console.log(body);
 				if (body.result.includes('console')) {
 					setDebug(true);
 				}

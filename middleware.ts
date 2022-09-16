@@ -11,11 +11,10 @@ export async function middleware(request: NextRequest) {
     /^\/_next\//,
     /\.(png|ico|json)$/,
     /^\/api\/auth\//,
-    /^\/api\/cck\/route\//
+    /^\/api\/cck\/route/
   ];
 
   const isAuthRequired = !allowedWithoutAuth.some(rx => rx.test(request.nextUrl.pathname));
-
   if (isAuthRequired) {
     try {
       await getUserContext(request);

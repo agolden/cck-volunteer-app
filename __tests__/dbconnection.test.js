@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom'
-import DBConnection from '@/components/db-connection';
-import { Organization, EventCategory, Event } from '@/components/db-connection';
+import { Organization, EventCategory, Event, EventRole, EventPosition } from '@/components/db-connection';
 
 const testOrg1 = Object.freeze({name: "The Human Fund", description: "We collect funds for humans"});
 const testEventCategory1 = Object.freeze({id_ref: "cckmealdelivery", name: "Meal prep & delivery", description: "Several times a week, CCK prepares and delivers free, hot, plant-based meals to those who need them."});
 const testEvent1 = Object.freeze({id_ref: "cckmealdelivery-03-02-2022", name: "Meal prep & delivery Feb 03", start_date: new Date()});
-const testEventPosition1 = Object.freeze({id_ref: "cckmealdelivery-03-02-2022-Mill-Rd", name: "Meal delivery: Mill Rd."});
+const testEventRole1 = Object.freeze({id_ref: "cckmealdelivery-03-02-2022-delivery", name: "Meal delivery", description: "Delivery volunteers deliver meals using their personal vehicle (typically a bicycle or car)."})
+const testEventPosition1 = Object.freeze({id_ref: "cckmealdelivery-03-02-2022-Mill-Rd", name: "Mill Rd."});
 
 function getRandomString() {
   return (Math.random() + 1).toString(36);
@@ -16,9 +16,13 @@ async function standupOrg(org, afterStandup) {
   testOrg['id_ref'] = getRandomString();
   let theOrg = await Organization.create(testOrg);
 
-  await afterStandup(theOrg);
-  
-  await Organization.remove({id: theOrg.id});
+  try {
+    await afterStandup(theOrg);
+  } catch (e) {
+    throw e;
+  } finally {
+    await Organization.remove({id: theOrg.id});
+  }
 }
 
 async function createEventCategory(category, orgId) {
@@ -37,8 +41,24 @@ async function createEvent(event, eventCategoryId) {
   return await Event.create(testEvent);
 }
 
-describe('DBConnection', () => {
+
+async function createEventRole(eventRole, eventId) {
+  var testEventRole = JSON.parse(JSON.stringify(testEventRole1));
+  testEventRole['id_event'] = eventId
+  return await EventRole.create(testEventRole);
+}
+
+async function createEventPosition(eventPosition, eventId, eventRoleId) {
   
+  
+  var testEventPosition = JSON.parse(JSON.stringify(testEventPosition1));
+  testEventPosition['id_event'] = eventId
+  testEventPosition['id_event_role'] = eventRoleId
+  
+  return await EventPosition.create(testEventPosition);
+}
+
+
   it('creates an org, fetches an org by id, deletes an org by id', async () => {
     var createdId;
     await standupOrg(testOrg1, async org => {
@@ -112,7 +132,7 @@ describe('DBConnection', () => {
     });
   });
 
-   it('fetches an event using org and event refs', async () => {
+  it('fetches an event using org and event refs', async () => {
     await standupOrg(testOrg1, async org => {
       const theEventCategory = await createEventCategory(testEventCategory1, org.id);
       const theEvent = await createEvent(testEvent1, theEventCategory.id);
@@ -126,4 +146,83 @@ describe('DBConnection', () => {
       expect(gottenEvent.name).toMatch(testEvent1.name);
     });
   });
-})
+
+  it('creates an event role, fetches by id', async () => {
+    var createdId;
+    await standupOrg(testOrg1, async org => {
+      const theEventCategory = await createEventCategory(testEventCategory1, org.id);
+      const theEvent = await createEvent(testEvent1, theEventCategory.id);
+      const theEventRole = await createEventRole(testEventRole1, theEvent.id);
+      createdId = theEventRole.id;
+      expect(createdId).toEqual(expect.any(Number));
+      
+      const gottenEventRole = await EventRole.get({id: createdId});
+      expect(gottenEventRole.id_ref).toMatch(testEventRole1.id_ref);
+      expect(gottenEventRole.name).toMatch(testEventRole1.name);
+      expect(gottenEventRole.description).toMatch(gottenEventRole.description);
+    });
+
+    expect(createdId).toEqual(expect.any(Number));
+    const gottenEventRole = await EventRole.get({id: createdId});
+    expect(gottenEventRole).toBeNull();
+  });
+
+  it('fetches an event role using refs', async () => {
+    await standupOrg(testOrg1, async org => {
+      const theEventCategory = await createEventCategory(testEventCategory1, org.id);
+      const theEvent = await createEvent(testEvent1, theEventCategory.id);
+      const theEventRole = await createEventRole(testEventRole1, theEvent.id);
+
+      const eventRoleId = {
+        id_organization_ref: org.id_ref,
+        id_event_ref: theEvent.id_ref,
+        id_ref: theEventRole.id_ref
+      }
+
+      const gottenEventRole = await EventRole.get(eventRoleId);
+      expect(gottenEventRole.id_ref).toMatch(testEventRole1.id_ref);
+      expect(gottenEventRole.name).toMatch(testEventRole1.name);
+      expect(gottenEventRole.description).toMatch(gottenEventRole.description);
+    });
+  });
+
+  it('creates an event position, fetches by id', async () => {
+    var createdId;
+    await standupOrg(testOrg1, async org => {
+      const theEventCategory = await createEventCategory(testEventCategory1, org.id);
+      const theEvent = await createEvent(testEvent1, theEventCategory.id);
+      const theEventRole = await createEventRole(testEventRole1, theEvent.id);
+      const theEventPosition = await createEventPosition(testEventPosition1, theEvent.id, theEventRole.id);
+      createdId = theEventPosition.id;
+      expect(createdId).toEqual(expect.any(Number));
+      
+      const gottenEventPosition = await EventPosition.get({id: createdId});
+      expect(gottenEventPosition.id_ref).toMatch(testEventPosition1.id_ref);
+      expect(gottenEventPosition.name).toMatch(testEventPosition1.name);
+    });
+
+    expect(createdId).toEqual(expect.any(Number));
+    const gottenEventPosition = await EventPosition.get({id: createdId});
+    expect(gottenEventPosition).toBeNull();
+  });
+
+  it('fetches an event position using refs', async () => {
+    await standupOrg(testOrg1, async org => {
+      const theEventCategory = await createEventCategory(testEventCategory1, org.id);
+      const theEvent = await createEvent(testEvent1, theEventCategory.id);
+      const theEventRole = await createEventRole(testEventRole1, theEvent.id);
+      const theEventPosition = await createEventPosition(testEventPosition1, theEvent.id, theEventRole.id);
+
+      const eventPositionId = {
+        id_organization_ref: org.id_ref,
+        id_event_ref: theEvent.id_ref,
+        id_ref: theEventPosition.id_ref
+      }
+
+      const gottenEventPosition = await EventPosition.get(eventPositionId);
+      expect(gottenEventPosition.id_ref).toMatch(testEventPosition1.id_ref);
+      expect(gottenEventPosition.name).toMatch(testEventPosition1.name);
+    });
+  });
+
+

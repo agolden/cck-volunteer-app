@@ -10,7 +10,8 @@ export async function middleware(request: NextRequest) {
     /^\/register$/,
     /^\/_next\//,
     /\.(png|ico|json)$/,
-    /^\/api\/auth\//
+    /^\/api\/auth\//,
+    /^\/api\/cck\/route\//
   ];
 
   const isAuthRequired = !allowedWithoutAuth.some(rx => rx.test(request.nextUrl.pathname));

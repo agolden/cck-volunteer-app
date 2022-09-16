@@ -48,8 +48,17 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         const waypoints: LatLng[] = [];
 
         for (const deliveryIdx in gottenRoute.route_delivery) {
-            const loc = await findLocation(gottenRoute.route_delivery[deliveryIdx].plus_code);
-            waypoints.push(loc.candidates[0].geometry.location);
+
+            let a = gottenRoute.route_delivery[deliveryIdx].plus_code;
+            if (a.length <= 13 && a.includes("+")) { //then it's a PlusCode
+                if (a.indexOf("+")==4) {
+                    a = "9f42"+a;
+                }
+            }
+            if (a.length>0) {
+                const loc = await findLocation(a);
+                waypoints.push(loc.candidates[0].geometry.location);
+            }
         }
         
         const directionsRequest: DirectionsRequest = {

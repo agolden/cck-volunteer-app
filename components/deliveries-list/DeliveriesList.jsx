@@ -153,6 +153,12 @@ const DeliveriesList = ({ date, id_ref, passcode, mode, basePath }) => {
 			<ul className={styles.list}>
 				{routeData.deliveries.map((item, index) => {
 					const portions = item.portions;
+					
+					if (item.plus_code.length <= 13 && item.plus_code.includes("+")) { //then it's a PlusCode
+						if (item.plus_code.indexOf("+")==4) {
+							item.plus_code = "9f42"+item.plus_code;
+						}
+					}
 					item.plusCode = item.plus_code;
 					item.whenNotHome = item.when_not_home;
 					return (

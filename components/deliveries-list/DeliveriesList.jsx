@@ -1,11 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { Box, Button, Text } from '@chakra-ui/react';
+import { Box, Button, Text, Flex } from '@chakra-ui/react';
 import dayjs from 'dayjs';
 import Item from './item';
 import LoadingSpinner from '../loading-spinner';
 import BackToLockon from '../../components/back-to-lockon';
 import styles from './DeliveriesList.module.scss';
 import { getRouteData } from '@/components/api';
+import { useRouter } from 'next/router';
+import { ArrowForwardIcon } from '@chakra-ui/icons';
 
 import customParseFormat from 'dayjs/plugin/customParseFormat';
 dayjs.extend(customParseFormat);
@@ -16,7 +18,8 @@ const DeliveriesList = ({ date, id_ref, passcode, mode, basePath }) => {
 	const [routeData, setRouteData] = useState();
 
 	const dishOfTheDay = routeData?.event?.addl_info?.dishOfTheDay;
-	
+	const router = useRouter();
+
 	useEffect(() => {
 		setIsLoading(true);
 		getRouteData({basePath, date, ref:id_ref, passcode, mode}).then((response) => {
@@ -62,8 +65,8 @@ const DeliveriesList = ({ date, id_ref, passcode, mode, basePath }) => {
 	
 	return (
 		<div className={styles.root}>
-			<Box d="flex" justifyContent="space-between">
-				<Box d="flex" ml={2} mr={2}>
+			<Box d="flex" display="flex" justifyContent="space-between">
+				<Box d="flex" display="flex" ml={2} mr={2}>
 					<Text>Deliveries for </Text>
 					<Text fontWeight={700} ml={1}>
 					{formattedDate}
@@ -73,15 +76,6 @@ const DeliveriesList = ({ date, id_ref, passcode, mode, basePath }) => {
 						{region}
 					</Text>
 				</Box>
-				<Button
-					colorScheme="grey"
-					mr={2}
-					//onClick={onReset}
-					size="sm"
-					variant="outline"
-				>
-					Reset
-				</Button>
 			</Box>
 			{displayDish && (
 				<Box
@@ -135,6 +129,27 @@ const DeliveriesList = ({ date, id_ref, passcode, mode, basePath }) => {
 					</Box>
 				</Box>
 			)}
+			<Flex direction="row" align-items="center">
+			<Button
+				margin="auto"
+				as="a"
+				onClick={() => {
+					router.push({
+						pathname: '/api/cck/route.gpx',
+						query: {
+							date: date,
+							ref: id_ref,
+							passcode: passcode,
+							mode: mode
+						}
+					});
+				}}
+				rightIcon={<ArrowForwardIcon />}
+				colorScheme="blue"
+				target="_blank"
+			>
+				Download route as GPX
+			</Button></Flex>
 			<ul className={styles.list}>
 				{routeData.deliveries.map((item, index) => {
 					const portions = item.portions;

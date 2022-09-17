@@ -25,7 +25,7 @@ const Item = ({ data, markComplete, portions, unmarkComplete }) => {
 				<li className={styles.item}>
 					<Box ml="3" py="3">
 						<Box
-							d="flex"
+							display="flex"
 							alignItems="baseline"
 							justifyContent="space-between"
 						>
@@ -56,7 +56,7 @@ const Item = ({ data, markComplete, portions, unmarkComplete }) => {
 			<li className={styles.item}>
 				<Box ml="3" py="3">
 					<Box
-						d="flex"
+						display="flex"
 						alignItems="baseline"
 						justifyContent="space-between"
 					>
@@ -68,7 +68,7 @@ const Item = ({ data, markComplete, portions, unmarkComplete }) => {
 						</Text>
 					</Box>
 					<Text color="gray.500">{data.address}</Text>
-					<Box d="flex" alignItems="baseline">
+					<Box display="flex" alignItems="baseline">
 						<Badge
 							colorScheme="green"
 							fontSize={14}

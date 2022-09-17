@@ -6,8 +6,9 @@ import { getUserContext } from '@/components/api-helpers';
 export async function middleware(request: NextRequest) {
 
   const allowedWithoutAuth = [
-    /^\/log(in|outt?)$/,
+    /^\/log(in|out)$/,
     /^\/register$/,
+    /^\/route$/,
     /^\/_next\//,
     /\.(png|ico|json)$/,
     /^\/api\/auth\//,

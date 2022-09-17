@@ -142,7 +142,7 @@ const DeliveriesList = ({ date, id_ref, passcode, mode, basePath }) => {
 							passcode: passcode,
 							mode: mode
 						}
-					})
+					});
 				}}
 				rightIcon={<ArrowForwardIcon />}
 				colorScheme="blue"

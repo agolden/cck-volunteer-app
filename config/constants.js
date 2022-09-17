@@ -1,0 +1,16 @@
+export const SheetCodes = {
+    Arbury: '2130690733',
+    Barnwell: '1015477993',
+    'Cambridge North': '1416970749',
+    Castle: '1970631526',
+    'Cherry Hinton': '2039168210',
+    Chesterton: '663555943',
+    Coleridge: '1229968445',
+    'Hills Road': '501353001',
+    'Kings Hedges': '207893517',
+    'Mill Road': '776668600',
+    'Queen Edith': '807899719',
+    Trumpington: '1898826632',
+    Demo: '1683354199',
+    DishOfTheDay: '169944562',
+};

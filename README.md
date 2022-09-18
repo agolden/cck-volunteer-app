@@ -52,9 +52,11 @@ ln -s .env.local .env
 In this file, there are several default variables that may be changed (and several others that may be added):
 
 * **DB_HOST** - *(required&#10071;)* - The database instance's fully qualified domain name
-* **DB_MASTER_USER** - *(required&#10071;)* - The database master user (required for schema and user management)
+* **DB_MASTER_USER** - *(required&#10071;)* - The database master user (required for db user creation)
 * **DB_MASTER_PASSWORD** - *(required&#10071;)* - The database master user's password
 * **DB_NAME** - *(required&#10071;)* - The name of the application's database
+* **DB_PIPELINE_USER** - *(required&#10071;)* - The database pipeline user (required for schema migrations)
+* **DB_PIPELINE_PASSWORD** - *(required&#10071;)* - The database pipeline user's password
 * **DB_USER** - *(required&#10071;)* - The application's database username
 * **DB_PASSWORD** - *(required&#10071;)* - The application's database password
 * **JWT_SS** - *(required&#10071;)* - The secret used in generating / validating JSON web tokens (for authentication/authorization purposes)

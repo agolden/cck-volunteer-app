@@ -112,6 +112,12 @@ model person {
   person_system_role person_system_role[]
 }
 
+model organization_person {
+  id              Int           @id @default(autoincrement())
+  id_person       Int
+  id_organization Int
+}
+
 model person_system_role {
   id              Int           @id @default(autoincrement())
   id_person       Int

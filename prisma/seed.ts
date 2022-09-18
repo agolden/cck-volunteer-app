@@ -18,7 +18,26 @@ async function main() {
             name: 'Cambridge Community Kitchen',
             description: 'Cambridge Community Kitchen is a food solidarity collective dedicated to tackling food poverty in Cambridge.'
         },
-    })
+    });
+
+    const roles = [
+      {
+        role: "master-admin",
+        description: "Master system admin with completely unrestricted access for all organizations"
+      },
+      {
+        role: "events-admin",
+        description: "An events admin with full access to modify a given organization's events"
+      },
+    ];
+
+    for (const roleIdx in roles) {
+      await prisma.system_role.upsert({
+        where: { role: roles[roleIdx].role },
+        update: {},
+        create: roles[roleIdx],
+      })
+    }
 
     console.log("Database successfully seeded with cck data.")
 }

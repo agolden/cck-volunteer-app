@@ -48,6 +48,7 @@
     "@typescript-eslint/eslint-plugin": "^5.36.2",
     "@typescript-eslint/parser": "^5.36.2",
     "@vercel/node": "^2.5.14",
+    "dotenv": "^16.0.2",
     "eslint": "8.22.0",
     "eslint-config-next": "12.2.5",
     "eslint-plugin-jsdoc": "^39.3.6",

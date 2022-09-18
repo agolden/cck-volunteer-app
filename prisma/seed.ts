@@ -1,7 +1,10 @@
 #!/usr/bin/env ts-node
 
 import { PrismaClient } from '@prisma/client'
+import * as dotenv from 'dotenv';
+
 const prisma = new PrismaClient()
+dotenv.config({ path: '.env.local' });
 
 async function main() {
     

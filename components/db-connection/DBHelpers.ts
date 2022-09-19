@@ -30,6 +30,7 @@ export function setDatabaseUrl() {
 	console.log("About to check if it should be ssl");
 	if (process.env.NO_DB_SSL !== "true" && process.env.DB_HOST.includes('aws.com')) {
 		console.log("it should be ssl");
+		console.log(__dirname);
 		process.env.DATABASE_URL += `&sslaccept=strict&sslcert=${encodeURIComponent('../aws/eu-west-2-bundle.pem')}`;
 	}
 }

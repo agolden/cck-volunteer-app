@@ -29,7 +29,6 @@ export function setDatabaseUrl() {
 
 	const awsdec = Buffer.from(awsPem, 'base64').toString('utf8').replace(/\\n/g, "\n");
 	if (process.env.NO_DB_SSL !== "true" && process.env.DB_HOST.includes('aws.com')) {
-		console.log(awsdec);
 		process.env.DATABASE_URL += `&sslaccept=strict&sslcert=${encodeURIComponent(awsdec)}`;
 	}
 }

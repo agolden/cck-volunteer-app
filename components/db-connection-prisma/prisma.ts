@@ -3,6 +3,8 @@ import { setDatabaseUrl } from '@/components/db-connection/DBHelpers';
 
 setDatabaseUrl();
 
+console.log(process.env.DATABASE_URL)
+
 let prisma: PrismaClient;
 
 if (process.env.NODE_ENV === 'production') {

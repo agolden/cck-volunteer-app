@@ -90,6 +90,7 @@ The package.json defines a number of scripts for use in development:
 * **lint** - Helps keep your code nice and tidy! All code must pass lint or it cannot be deployed.
 * **test** - Runs unit tests. The pipeline will ultimately reject anything that doesn't pass tests.
 * **update-schema** - After changes are made to the schema.prisma file - or when first configuring your environment, this script should be run to deploy the schema to the database.
+* **seed-db** - Seeds database with basic cck data (i.e., organization, event types, etc.)
 
 Run the scripts as follows:
 ```console
@@ -99,4 +100,28 @@ npm run <<script>>
 For example:
 ```console
 npm run update-schema
+```
+
+# Database management
+
+## Stack management
+
+The AWS cloudformation stack can be created / updated / deleted using the AWS CLI, for example:
+```console
+aws cloudformation create-stack --stack-name my-awesome-stack-name --template-body file://aws/aws-cloudformation.yml --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation update-stack --stack-name my-awesome-stack-name --template-body file://aws/aws-cloudformation.yml --capabilities CAPABILITY_NAMED_IAM
+aws cloudformation delete-stack --stack-name my-awesome-stack-name
+```
+
+Once the stack has been successfully deployed, the relevant secrets can be retrieved as follows:
+```console
+aws secretsmanager get-secret-value --secret-id aws-arn:aws:secretsmanager:eu-west-2:myaccountid:secret:my-credential-id
+```
+
+## Database backup
+
+Here is an example of backing up the contents of the MySQL server:
+
+```console
+mysqldump -h "myawesome.database.instance.com" --all-databases --triggers --routines --events --user=admin -p > dump.sql
 ```

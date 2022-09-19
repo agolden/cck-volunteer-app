@@ -9,7 +9,7 @@
     "lint": "next lint",
     "test": "jest --watch",
     "update-schema": "./scripts/update-schema.sh",
-    "seed-db": "ts-node -P ./scripts.tsconfig.json ./prisma/seed.ts",
+    "seed-db": "npm run update-schema && ./scripts/run-ts.sh ./prisma/seed.ts",
     "publish": "vercel"
   },
   "dependencies": {
@@ -28,7 +28,7 @@
     "graphql-request": "^4.3.0",
     "jose": "^4.9.2",
     "jsonwebtoken": "^8.5.1",
-    "mysql2": "^2.3.3",
+    "mysql": "^2.18.1",
     "next": "12.2.5",
     "next-seo": "^5.5.0",
     "otplib": "^12.0.1",

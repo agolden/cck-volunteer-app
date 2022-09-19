@@ -1,15 +1,23 @@
-import mysql from 'mysql2';
+import mysql from 'mysql';
 import util from 'util';
 import SQL from 'sql-template-strings';
+import * as fs from 'fs';
 
-
-const dbPool = mysql.createPool({
+const dbConfig = {
     connectionLimit : 100, //important
     host: process.env.DB_HOST,
 	user: process.env.DB_USER,
 	password: process.env.DB_PASSWORD,
 	database: process.env.DB_NAME
-});
+};
+
+if (process.env.NO_DB_SSL !== "true" && process.env.DB_HOST.includes('aws.com')){
+	dbConfig['ssl'] = {
+		ca : fs.readFileSync(process.cwd() + "/aws/eu-west-2-bundle.pem")
+	};
+}
+
+const dbPool = mysql.createPool(dbConfig);
 
 /**
  * Helper function for building promise-based database queries

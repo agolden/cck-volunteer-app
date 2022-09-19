@@ -3,6 +3,8 @@ export interface RecordIdentifier {
 	id_ref?: string;
 }
 
+import * as fs from 'fs';
+
 /**
  * Builds a where clause using the database record id, if available,
  * and unique reference string otherwise
@@ -28,8 +30,16 @@ export function setDatabaseUrl() {
 	process.env.DATABASE_URL = `mysql://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASSWORD)}@${process.env.DB_HOST}:3306/${process.env.DB_NAME}?schema=public`;
 
 	const awsdec = Buffer.from(awsPem, 'base64').toString('utf8').replace(/\\n/g, "\n");
+	fs.writeFileSync('aws-bundle.pem', awsdec);
+
+	console.log("About to check if it should be ssl");
 	if (process.env.NO_DB_SSL !== "true" && process.env.DB_HOST.includes('aws.com')) {
-		process.env.DATABASE_URL += `&sslaccept=strict&sslcert=${encodeURIComponent(awsdec)}`;
+		const testFolder = __dirname;
+		fs.readdirSync(testFolder).forEach(file => {
+			console.log(file);
+		});
+		
+		process.env.DATABASE_URL += `&sslaccept=strict&sslcert=${encodeURIComponent('./aws-bundle.pem')}`;
 	}
 }
 

@@ -36,7 +36,6 @@ const DeliveriesList = ({ date, id_ref, passcode, mode, basePath }) => {
 		(id, value) => {
 			const routeDataCopy = JSON.parse(JSON.stringify(routeData));
 			routeDataCopy.deliveries[id]['completed'] = value;
-			console.log(routeDataCopy);
 			setRouteData(routeDataCopy);
 		},
 		[routeData],

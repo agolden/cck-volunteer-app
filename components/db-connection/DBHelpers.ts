@@ -1,4 +1,3 @@
-import * as fs from 'fs';
 import path from 'path';
 
 export interface RecordIdentifier {
@@ -30,16 +29,8 @@ export function getReference(org: RecordIdentifier): [string, string | number] {
 export function setDatabaseUrl() {
 	process.env.DATABASE_URL = `mysql://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASSWORD)}@${process.env.DB_HOST}:3306/${process.env.DB_NAME}?schema=public`;
 
-	console.log("About to check if it should be ssl");
 	if (process.env.NO_DB_SSL !== "true" && process.env.DB_HOST.includes('aws.com')) {
-		console.log("it should be ssl");
-		console.log(__dirname);
-		console.log(process.cwd());
-		const testFolder = path.join(process.cwd());
-		fs.readdirSync(testFolder).forEach(file => {
-			console.log(file);
-		});
-		
-		process.env.DATABASE_URL += `&sslaccept=strict&sslcert=${encodeURIComponent('../aws/eu-west-2-bundle.pem')}`;
+		const pemPath = path.join(process.cwd(), 'aws', 'eu-west-2-bundle.pem');
+		process.env.DATABASE_URL += `&sslaccept=strict&sslcert=${encodeURIComponent(pemPath)}`;
 	}
 }

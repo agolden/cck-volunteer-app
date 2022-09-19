@@ -76,7 +76,7 @@ const DeliveriesList = ({ date, id_ref, passcode, mode, basePath }) => {
 					</Text>
 				</Box>
 			</Box>
-			{displayDish && (
+			{displayDish && dishOfTheDay && (
 				<Box
 					border="2px"
 					borderColor="gray.200"
@@ -118,7 +118,7 @@ const DeliveriesList = ({ date, id_ref, passcode, mode, basePath }) => {
 						</Text>
 						{dishOfTheDay.allergens ? (
 							<Text fontSize={14} ml={1}>
-								{dishOfTheDay.allergens}
+								{dishOfTheDay?.allergens}
 							</Text>
 						) : (
 							<Text fontSize={14} ml={1}>

@@ -36,7 +36,6 @@ const DeliveriesList = ({ date, id_ref, passcode, mode, basePath }) => {
 		(id, value) => {
 			const routeDataCopy = JSON.parse(JSON.stringify(routeData));
 			routeDataCopy.deliveries[id]['completed'] = value;
-			console.log(routeDataCopy);
 			setRouteData(routeDataCopy);
 		},
 		[routeData],
@@ -65,8 +64,8 @@ const DeliveriesList = ({ date, id_ref, passcode, mode, basePath }) => {
 	
 	return (
 		<div className={styles.root}>
-			<Box d="flex" display="flex" justifyContent="space-between">
-				<Box d="flex" display="flex" ml={2} mr={2}>
+			<Box display="flex" justifyContent="space-between">
+				<Box display="flex" ml={2} mr={2}>
 					<Text>Deliveries for </Text>
 					<Text fontWeight={700} ml={1}>
 					{formattedDate}
@@ -129,7 +128,7 @@ const DeliveriesList = ({ date, id_ref, passcode, mode, basePath }) => {
 					</Box>
 				</Box>
 			)}
-			<Flex direction="row" align-items="center">
+			<Flex direction="row">
 			<Button
 				margin="auto"
 				as="a"

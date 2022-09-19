@@ -1,7 +1,7 @@
 import mysql from 'mysql';
 import util from 'util';
 import SQL from 'sql-template-strings';
-import { awsPem } from './DBHelpers';
+import * as fs from 'fs';
 
 const dbConfig = {
     connectionLimit : 100, //important
@@ -12,9 +12,8 @@ const dbConfig = {
 };
 
 if (process.env.NO_DB_SSL !== "true" && process.env.DB_HOST.includes('aws.com')){
-	const awsdec = Buffer.from(awsPem, 'base64').toString('utf8').replace(/\\n/g, "\n");
 	dbConfig['ssl'] = {
-		ca : awsdec
+		ca : fs.readFileSync(process.cwd() + "/aws/eu-west-2-bundle.pem")
 	};
 }
 

@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
+import { setDatabaseUrl } from '@/components/db-connection/DBHelpers';
 
-process.env.DATABASE_URL = `mysql://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASSWORD)}@${process.env.DB_HOST}:3306/${process.env.DB_NAME}?schema=public`;
+setDatabaseUrl();
 
 let prisma: PrismaClient;
 

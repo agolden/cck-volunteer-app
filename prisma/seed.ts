@@ -2,43 +2,43 @@
 
 import { PrismaClient } from '@prisma/client'
 import * as dotenv from 'dotenv';
+import { setDatabaseUrl } from '../components/db-connection/DBHelpers';
+import Roles from '../components/constants/Roles'
 
 const prisma = new PrismaClient()
 dotenv.config({ path: '.env.local' });
 
 async function main() {
     
-    process.env.DATABASE_URL =  `mysql://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASSWORD)}@${process.env.DB_HOST}:3306/${process.env.DB_NAME}?schema=public`
+    setDatabaseUrl();
     
-    const cck = await prisma.organization.upsert({
-        where: { id_ref: 'cck' },
-        update: {},
+    const organization = {
+      id_ref: 'cck',
+      name: 'Cambridge Community Kitchen',
+      description: 'Cambridge Community Kitchen is a food solidarity collective dedicated to tackling food poverty in Cambridge.',
+      event_category: {
         create: {
-            id_ref: 'cck',
-            name: 'Cambridge Community Kitchen',
-            description: 'Cambridge Community Kitchen is a food solidarity collective dedicated to tackling food poverty in Cambridge.'
-        },
-    });
-
-    const roles = [
-      {
-        role: "master-admin",
-        description: "Master system admin with completely unrestricted access for all organizations"
-      },
-      {
-        role: "events-admin",
-        description: "An events admin with full access to modify a given organization's events"
-      },
-    ];
-
-    for (const roleIdx in roles) {
-      await prisma.system_role.upsert({
-        where: { role: roles[roleIdx].role },
-        update: {},
-        create: roles[roleIdx],
-      })
+          id_ref: "meal-prep-delivery",
+          name: "Meal prep & delivery",
+          description: "Several times a week, CCK prepares and delivers free, hot, plant-based meals to those who need them."
+        }
+      }
     }
 
+    const cck = await prisma.organization.upsert({
+        where: { id_ref: 'cck' },
+        update: organization,
+        create: organization,
+    });
+
+    for (var key in Roles) {
+      await prisma.system_role.upsert({
+        where: { role: Roles[key].role },
+        update: {},
+        create: Roles[key],
+      })
+    }
+    
     console.log("Database successfully seeded with cck data.")
 }
 

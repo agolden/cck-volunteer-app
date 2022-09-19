@@ -20,3 +20,14 @@ export function getReference(org: RecordIdentifier): [string, string | number] {
 
 	return [fieldName, fieldValue];
 }
+
+/**
+ * Sets the database URL environment variable so that prisma knows how to connect to the database
+ */
+export function setDatabaseUrl() {
+	process.env.DATABASE_URL = `mysql://${process.env.DB_USER}:${encodeURIComponent(process.env.DB_PASSWORD)}@${process.env.DB_HOST}:3306/${process.env.DB_NAME}?schema=public`;
+
+	if (process.env.NO_DB_SSL !== "true" && process.env.DB_HOST.includes('aws.com')) {
+		process.env.DATABASE_URL += `&sslaccept=strict&sslcert=${encodeURIComponent('../aws/eu-west-2-bundle.pem')}`;
+	}
+}

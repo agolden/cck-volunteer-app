@@ -6,6 +6,7 @@ import * as DBConnection from './DBConnection';
 import * as EventPosition from './EventPosition';
 import * as Route from './Route';
 import * as RouteDelivery from './RouteDelivery';
+import * as DBHelpers from './DBHelpers';
 
-export { Organization, EventCategory, EventRole, DBConnection, Event, EventPosition, Route, RouteDelivery };
+export { Organization, EventCategory, EventRole, DBConnection, Event, EventPosition, Route, RouteDelivery, DBHelpers };
 

@@ -130,6 +130,7 @@ model person_system_role {
   @@index([id_organization], map: "id_organization_idx")
   @@index([id_person], map: "id_person_idx")
   @@index([id_role], map: "id_role_idx")
+  @@unique([id_person, id_role, id_organization], name: "personsystemrole")  
 }
 
 model system_role {

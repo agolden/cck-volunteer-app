@@ -34,6 +34,7 @@ export function setDatabaseUrl() {
 	if (process.env.NO_DB_SSL !== "true" && process.env.DB_HOST.includes('aws.com')) {
 		console.log("it should be ssl");
 		console.log(__dirname);
+		console.log(process.cwd());
 		const testFolder = path.join(process.cwd());
 		fs.readdirSync(testFolder).forEach(file => {
 			console.log(file);

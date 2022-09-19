@@ -3,6 +3,8 @@ export interface RecordIdentifier {
 	id_ref?: string;
 }
 
+import * as fs from 'fs';
+
 /**
  * Builds a where clause using the database record id, if available,
  * and unique reference string otherwise
@@ -31,6 +33,11 @@ export function setDatabaseUrl() {
 	if (process.env.NO_DB_SSL !== "true" && process.env.DB_HOST.includes('aws.com')) {
 		console.log("it should be ssl");
 		console.log(__dirname);
+		const testFolder = __dirname;
+		fs.readdirSync(testFolder).forEach(file => {
+			console.log(file);
+		});
+		
 		process.env.DATABASE_URL += `&sslaccept=strict&sslcert=${encodeURIComponent('../aws/eu-west-2-bundle.pem')}`;
 	}
 }

@@ -7,7 +7,8 @@ import { Redis } from "@upstash/redis";
 export async function middleware(request: NextRequest) {
 
   const rateLimited = [
-    /^\/api\/auth\/totp\/request/
+    /^\/api\/auth\/totp\/request/,
+    /^\/api\/auth\/register/
   ];
   
   if(rateLimited.some(rx => rx.test(request.nextUrl.pathname)) && process.env.UPSTASH_REDIS_REST_URL) {

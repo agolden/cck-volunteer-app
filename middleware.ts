@@ -19,7 +19,6 @@ export async function middleware(request: NextRequest) {
     });
 
     const identifier = request.ip ? request.ip : "127.0.0.1"
-    console.log(identifier);
     const { success } = await ratelimit.limit(identifier);
     if (!success) {
       return NextResponse.rewrite(new URL('/api/auth/unauthorized', request.url));
